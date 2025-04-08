@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+<style>
+    .status-badge {
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    .status-pending {
+        background-color: #fff9c2;
+        color: #927500;
+    }
+    .status-paid {
+        background-color: #c2f5d5;
+        color: #0e6245;
+    }
+    .status-cancelled {
+        background-color: #ffd9d9;
+        color: #922020;
+    }
+    .detail-card {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .detail-header {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+    .detail-content {
+        padding: 1.5rem;
+    }
+    .detail-row {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .detail-label {
+        font-weight: 600;
+        width: 180px;
+        color: #555;
+    }
+    .detail-value {
+        flex: 1;
+    }
+    .action-btn {
+        margin-right: 8px;
+    }
+    .transaction-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 10px;
+    }
+    .transaction-expense {
+        background-color: #dc3545;
+    }
+    .expense-status-cell {
+        width: 100%;
+        text-align: center;
+    }
+    .badge {
+        font-size: 0.8rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة (مضمن مباشرة) -->
+    <div class="mb-4">
+        <!-- Breadcrumbs -->
+        <div class="mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'core:dashboard' %}">
+                            <i class="fas fa-home me-1"></i>{% trans "الرئيسية" %}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="fas fa-money-bill-wave me-1"></i>{% trans "الإدارة المالية" %}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'financial:expense_list' %}">
+                            <i class="fas fa-hand-holding-usd me-1"></i>{% trans "المصروفات" %}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ expense.title }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <i class="fas fa-hand-holding-usd fa-2x text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="h3 mb-1">{{ expense.title }}</h1>
+                    <p class="text-muted mb-0">تفاصيل بيانات المصروف</p>
+                </div>
+            </div>
+            <div>
+                {% if expense.status == 'pending' %}
+                <a href="{% url 'financial:expense_mark_paid' expense.id %}" class="btn btn-success me-2">
+                    <i class="fas fa-money-bill-wave me-1"></i>{% trans "تسديد المصروف" %}
+                </a>
+                {% endif %}
+                
+                {% if expense.status != 'cancelled' %}
+                <a href="{% url 'financial:expense_cancel' expense.id %}" class="btn btn-danger me-2">
+                    <i class="fas fa-times-circle me-1"></i>{% trans "إلغاء المصروف" %}
+                </a>
+                {% endif %}
+                
+                <a href="{% url 'financial:expense_edit' expense.id %}" class="btn btn-primary me-2">
+                    <i class="fas fa-edit me-1"></i>{% trans "تعديل" %}
+                </a>
+                
+                <a href="{% url 'financial:expense_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-right me-1"></i>{% trans "العودة" %}
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- معلومات أساسية -->
+    <div class="section-container">
+        <h5 class="section-title"><i class="fas fa-info-circle me-2"></i>{% trans "معلومات المصروف" %}</h5>
+        
+        <div class="detail-card mb-4">
+            <div class="detail-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0">{% trans "تفاصيل المصروف" %}</h2>
+                    <div>
+                        <span class="status-badge status-{{ expense.status }}">
+                            {% if expense.status == 'pending' %}
+                                {% trans "قيد الانتظار" %}
+                            {% elif expense.status == 'paid' %}
+                                {% trans "مدفوع" %}
+                            {% elif expense.status == 'cancelled' %}
+                                {% trans "ملغي" %}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "العنوان" %}</div>
+                            <div class="detail-value">{{ expense.title }}</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "المبلغ" %}</div>
+                            <div class="detail-value fw-bold">{{ expense.amount|custom_number_format }} {% trans "ج.م" %}</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "الفئة" %}</div>
+                            <div class="detail-value">
+                                {% if expense.category %}
+                                    {{ expense.category.name }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "غير محدد" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "رقم المرجع" %}</div>
+                            <div class="detail-value">
+                                {% if expense.reference_number %}
+                                    {{ expense.reference_number }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "غير محدد" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "تاريخ المصروف" %}</div>
+                            <div class="detail-value">{{ expense.date|date:"Y-m-d" }}</div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "تاريخ الدفع" %}</div>
+                            <div class="detail-value">
+                                {% if expense.payment_date %}
+                                    {{ expense.payment_date|date:"Y-m-d" }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "لم يتم الدفع بعد" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "الحالة" %}</div>
+                            <div class="detail-value">
+                                {% if expense.status == 'pending' %}
+                                    <span class="text-warning">{% trans "قيد الانتظار" %}</span>
+                                {% elif expense.status == 'paid' %}
+                                    <span class="text-success">{% trans "مدفوع" %}</span>
+                                {% elif expense.status == 'cancelled' %}
+                                    <span class="text-danger">{% trans "ملغي" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-row">
+                            <div class="detail-label">{% trans "أنشئ بواسطة" %}</div>
+                            <div class="detail-value">
+                                {% if expense.created_by %}
+                                    {{ expense.created_by.get_full_name }}
+                                {% else %}
+                                    <span class="text-muted">{% trans "غير محدد" %}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if expense.description %}
+                <div class="detail-row mt-3">
+                    <div class="detail-label">{% trans "الوصف" %}</div>
+                    <div class="detail-value">{{ expense.description }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if related_transactions %}
+    <!-- المعاملات المرتبطة -->
+    <div class="section-container">
+        <h5 class="section-title"><i class="fas fa-exchange-alt me-2"></i>{% trans "المعاملات المرتبطة" %}</h5>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">{% trans "المعاملات المالية المرتبطة بهذا المصروف" %}</h5>
+            </div>
+            <div class="card-body">
+                {% with table_id="related-transactions" %}
+                    {% with data=related_transactions %}
+                        {% with empty_message="لا توجد معاملات مرتبطة بهذا المصروف" %}
+                            {% with headers=transaction_headers %}
+                                {% with action_buttons=transaction_actions %}
+                                    {% with show_currency=True currency_symbol="ج.م" %}
+                                        {% include "components/data_table.html" %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- استخدام مكتبة DataTables من ملف datatables.min.js الموجود -->
+<script src="{% static 'js/global-table.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        {% if related_transactions %}
+        // تهيئة جدول المعاملات المرتبطة
+        initGlobalTable('related-transactions', {
+            order: [0, 'desc'],
+            columnDefs: [
+                { targets: 'col-actions', orderable: false }
+            ],
+            searching: false,
+            paging: false,
+            info: false
+        });
+        {% endif %}
+    });
+</script>
+{% endblock %} 

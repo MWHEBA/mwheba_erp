@@ -1,0 +1,283 @@
+[
+    {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "المدراء"
+        }
+    },
+    {
+        "model": "auth.group",
+        "pk": 2,
+        "fields": {
+            "name": "المحاسبون"
+        }
+    },
+    {
+        "model": "auth.group",
+        "pk": 3,
+        "fields": {
+            "name": "مدراء المخزون"
+        }
+    },
+    {
+        "model": "auth.group",
+        "pk": 4,
+        "fields": {
+            "name": "مندوبي المبيعات"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 1,
+        "fields": {
+            "name": "عرض المستخدمين",
+            "content_type": ["users", "user"],
+            "codename": "view_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 2,
+        "fields": {
+            "name": "إضافة مستخدمين",
+            "content_type": ["users", "user"],
+            "codename": "add_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 3,
+        "fields": {
+            "name": "تعديل المستخدمين",
+            "content_type": ["users", "user"],
+            "codename": "change_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 4,
+        "fields": {
+            "name": "حذف المستخدمين",
+            "content_type": ["users", "user"],
+            "codename": "delete_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 5,
+        "fields": {
+            "name": "عرض سجلات النشاط",
+            "content_type": ["users", "activitylog"],
+            "codename": "view_activitylog"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 6,
+        "fields": {
+            "name": "إضافة سجلات النشاط",
+            "content_type": ["users", "activitylog"],
+            "codename": "add_activitylog"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 7,
+        "fields": {
+            "name": "عرض المنتجات",
+            "content_type": ["inventory", "product"],
+            "codename": "view_product"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 8,
+        "fields": {
+            "name": "إضافة منتج",
+            "content_type": ["inventory", "product"],
+            "codename": "add_product"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 9,
+        "fields": {
+            "name": "تعديل منتج",
+            "content_type": ["inventory", "product"],
+            "codename": "change_product"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 10,
+        "fields": {
+            "name": "عرض فواتير المبيعات",
+            "content_type": ["sales", "sale"],
+            "codename": "view_sale"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 11,
+        "fields": {
+            "name": "إضافة فاتورة مبيعات",
+            "content_type": ["sales", "sale"],
+            "codename": "add_sale"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 12,
+        "fields": {
+            "name": "عرض فواتير المشتريات",
+            "content_type": ["purchases", "purchase"],
+            "codename": "view_purchase"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 13,
+        "fields": {
+            "name": "إضافة فاتورة مشتريات",
+            "content_type": ["purchases", "purchase"],
+            "codename": "add_purchase"
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 1,
+        "fields": {
+            "group": 1,
+            "permission": 1
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 2,
+        "fields": {
+            "group": 1,
+            "permission": 2
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 3,
+        "fields": {
+            "group": 1,
+            "permission": 3
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 4,
+        "fields": {
+            "group": 1,
+            "permission": 4
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 5,
+        "fields": {
+            "group": 1,
+            "permission": 5
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 6,
+        "fields": {
+            "group": 2,
+            "permission": 1
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 7,
+        "fields": {
+            "group": 2,
+            "permission": 5
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 8,
+        "fields": {
+            "group": 2,
+            "permission": 10
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 9,
+        "fields": {
+            "group": 2,
+            "permission": 12
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 10,
+        "fields": {
+            "group": 3,
+            "permission": 7
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 11,
+        "fields": {
+            "group": 3,
+            "permission": 8
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 12,
+        "fields": {
+            "group": 3,
+            "permission": 9
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 13,
+        "fields": {
+            "group": 3,
+            "permission": 12
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 14,
+        "fields": {
+            "group": 3,
+            "permission": 13
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 15,
+        "fields": {
+            "group": 4,
+            "permission": 7
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 16,
+        "fields": {
+            "group": 4,
+            "permission": 10
+        }
+    },
+    {
+        "model": "auth.grouppermissions",
+        "pk": 17,
+        "fields": {
+            "group": 4,
+            "permission": 11
+        }
+    }
+] 

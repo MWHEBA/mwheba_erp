@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/financial.css' %}">
+<style>
+    .balance-sheet-container {
+        margin-top: 20px;
+    }
+    .balance-sheet-section {
+        margin-bottom: 20px;
+    }
+    .balance-sheet-title {
+        border-bottom: 2px solid #4e73df;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    .account-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e3e6f0;
+    }
+    .total-row {
+        font-weight: bold;
+        border-top: 2px solid #4e73df;
+        border-bottom: 2px solid #4e73df;
+        padding: 10px 0;
+        margin-top: 10px;
+    }
+    .print-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .card-header {
+            background-color: white !important;
+            color: black !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+        </div>
+        <div class="card-body">
+            <!-- نموذج التصفية والطباعة -->
+            <div class="print-section no-print">
+                <form method="get" class="form-inline">
+                    <div class="form-group mx-2">
+                        <label for="date" class="mx-2">تاريخ الميزانية:</label>
+                        <input type="date" name="date" id="date" class="form-control"
+                            value="{{ balance_date|date:'Y-m-d' }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-2">عرض</button>
+                    <a href="{% url 'financial:balance_sheet' %}" class="btn btn-secondary">اليوم</a>
+                </form>
+                <div>
+                    <a href="#" class="btn btn-success" onclick="window.print()">
+                        <i class="fas fa-print"></i> طباعة
+                    </a>
+                </div>
+            </div>
+
+            <!-- عنوان التقرير -->
+            <div class="text-center mb-4">
+                <h4>الميزانية العمومية</h4>
+                <h5>كما في {{ balance_date|date:"Y-m-d" }}</h5>
+            </div>
+            
+            <div class="row balance-sheet-container">
+                <!-- الأصول -->
+                <div class="col-md-6 balance-sheet-section">
+                    <h5 class="balance-sheet-title">الأصول</h5>
+                    {% if assets %}
+                        {% for asset in assets %}
+                        <div class="account-row">
+                            <span>{{ asset.account.name }}</span>
+                            <span>{{ asset.balance }}</span>
+                        </div>
+                        {% endfor %}
+                        <div class="account-row total-row">
+                            <span>إجمالي الأصول</span>
+                            <span>{{ total_assets }}</span>
+                        </div>
+                    {% else %}
+                        <div class="text-center">لا توجد أصول لعرضها</div>
+                    {% endif %}
+                </div>
+                
+                <!-- الخصوم وحقوق الملكية -->
+                <div class="col-md-6">
+                    <!-- الخصوم -->
+                    <div class="balance-sheet-section">
+                        <h5 class="balance-sheet-title">الخصوم</h5>
+                        {% if liabilities %}
+                            {% for liability in liabilities %}
+                            <div class="account-row">
+                                <span>{{ liability.account.name }}</span>
+                                <span>{{ liability.balance }}</span>
+                            </div>
+                            {% endfor %}
+                            <div class="account-row total-row">
+                                <span>إجمالي الخصوم</span>
+                                <span>{{ total_liabilities }}</span>
+                            </div>
+                        {% else %}
+                            <div class="text-center">لا توجد خصوم لعرضها</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- حقوق الملكية -->
+                    <div class="balance-sheet-section">
+                        <h5 class="balance-sheet-title">حقوق الملكية</h5>
+                        {% if equity %}
+                            {% for item in equity %}
+                            <div class="account-row">
+                                <span>{{ item.account.name }}</span>
+                                <span>{{ item.balance }}</span>
+                            </div>
+                            {% endfor %}
+                            <div class="account-row total-row">
+                                <span>إجمالي حقوق الملكية</span>
+                                <span>{{ total_equity }}</span>
+                            </div>
+                        {% else %}
+                            <div class="text-center">لا توجد حقوق ملكية لعرضها</div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- إجمالي الخصوم وحقوق الملكية -->
+                    <div class="balance-sheet-section">
+                        <div class="account-row total-row">
+                            <span>إجمالي الخصوم وحقوق الملكية</span>
+                            <span>{{ total_liabilities_equity }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- التوازن -->
+            <div class="text-center mt-4 mb-2">
+                {% if total_assets == total_liabilities_equity %}
+                <div class="alert alert-success">
+                    الميزانية متوازنة
+                </div>
+                {% else %}
+                <div class="alert alert-danger">
+                    الميزانية غير متوازنة. الفرق: {{ total_assets|add:"-"|add:total_liabilities_equity }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

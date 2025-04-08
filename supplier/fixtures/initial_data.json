@@ -1,0 +1,86 @@
+[
+    {
+        "model": "supplier.supplier",
+        "pk": 1,
+        "fields": {
+            "name": "مورد نقدي",
+            "phone": "01000000000",
+            "email": "cash@example.com",
+            "address": "القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP1_OJ26"
+        }
+    },
+    {
+        "model": "supplier.supplier",
+        "pk": 2,
+        "fields": {
+            "name": "شركة الإلكترونيات الحديثة",
+            "phone": "01012345678",
+            "email": "modernelectronics@example.com",
+            "address": "المعادي، القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP2_4X4K"
+        }
+    },
+    {
+        "model": "supplier.supplier",
+        "pk": 3,
+        "fields": {
+            "name": "شركة الأثاث المنزلي",
+            "phone": "01098765432",
+            "email": "furniture@example.com",
+            "address": "مدينة نصر، القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP3_MWT5"
+        }
+    },
+    {
+        "model": "supplier.supplier",
+        "pk": 4,
+        "fields": {
+            "name": "مستوردات الملابس الرياضية",
+            "phone": "01055556666",
+            "email": "sportswear@example.com",
+            "address": "الإسكندرية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP4_E5S9"
+        }
+    },
+    {
+        "model": "supplier.supplier",
+        "pk": 5,
+        "fields": {
+            "name": "شركة الأجهزة المنزلية",
+            "phone": "01077778888",
+            "email": "homeappliances@example.com",
+            "address": "شارع الهرم، الجيزة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP5_4EZ6"
+        }
+    },
+    {
+        "model": "supplier.supplier",
+        "pk": 6,
+        "fields": {
+            "name": "مورد مكاتب",
+            "phone": "01011112222",
+            "email": "officesupplies@example.com",
+            "address": "الزمالك، القاهرة",
+            "is_active": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "SUPP6_K56O"
+        }
+    }
+]

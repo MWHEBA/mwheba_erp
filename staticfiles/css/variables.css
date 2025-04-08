@@ -1,0 +1,80 @@
+/**
+ * CSS Variables for MWHEBA ERP System
+ * 
+ * يحتوي على المتغيرات العامة والألوان الأساسية للنظام
+ * قمنا بتوحيد جميع المتغيرات في هذا الملف
+ */
+
+:root {
+    /* الألوان الأساسية */
+    --primary-color: #01578a;
+    --primary-dark: #013e61;
+    --primary-light: #0179b8;
+    --primary-rgb: 1, 87, 138;
+    --secondary-color: #667788;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --light-color: #f8f9fc;
+    --dark-color: #454d55;
+    --white: #ffffff;
+    --black: #000000;
+    --body-bg: #f8f9fc;
+    --text-color: #6e6e6e;
+    --text-dark: #333333;
+    --border-color: #e9ecef;
+    
+    /* ألوان القائمة الجانبية */
+    --sidebar-hover: #f5f7fa;
+    --sidebar-active: var(--primary-color);
+    --sidebar-text: #506690;
+    --sidebar-active-text: var(--primary-color);
+    
+    /* خلفيات العناصر الرئيسية */
+    --header-bg: #ffffff;
+    --content-bg: #f8f9fc;
+    --footer-bg: #ffffff;
+    
+    /* الأبعاد */
+    --sidebar-width: 250px;
+    --sidebar-collapsed-width: 80px;
+    --header-height: 60px;
+    --footer-height: 50px;
+    
+    /* الظلال */
+    --box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.15);
+    --box-shadow-sm: 0 0.125rem 0.25rem 0 rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    
+    /* تأثيرات */
+    --transition-speed: 0.15s;
+    --transition-speed-fast: 0.1s;
+    --transition-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --border-radius: 0.35rem;
+    --border-radius-sm: 0.2rem;
+    --border-radius-lg: 0.5rem;
+    
+    /* الخطوط */
+    --font-size-base: 0.9rem;
+    --font-size-sm: 0.8rem;
+    --font-size-lg: 1rem;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 600;
+    
+    /* المسافات */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 1rem;
+    --spacing-4: 1.5rem;
+    --spacing-5: 3rem;
+}
+
+/* متغيرات إضافية للأجهزة المحمولة، تضاف من خلال media queries في ملفات CSS المعنية */
+
+@media (max-width: 767px) {
+    :root {
+        --footer-height: 80px;
+    }
+} 

@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/financial.css' %}">
+<style>
+    .income-statement-container {
+        margin-top: 20px;
+    }
+    .income-statement-section {
+        margin-bottom: 30px;
+    }
+    .income-statement-title {
+        border-bottom: 2px solid #4e73df;
+        padding-bottom: 5px;
+        margin-bottom: 15px;
+    }
+    .account-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e3e6f0;
+    }
+    .total-row {
+        font-weight: bold;
+        border-top: 2px solid #4e73df;
+        border-bottom: 2px solid #4e73df;
+        padding: 10px 0;
+        margin-top: 10px;
+    }
+    .final-row {
+        font-weight: bold;
+        font-size: 1.1em;
+        background-color: #f8f9fc;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+    .print-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .profit {
+        color: #1cc88a;
+    }
+    .loss {
+        color: #e74a3b;
+    }
+    @media print {
+        .no-print {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .card-header {
+            background-color: white !important;
+            color: black !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">{{ title }}</h6>
+        </div>
+        <div class="card-body">
+            <!-- نموذج التصفية والطباعة -->
+            <div class="print-section no-print">
+                <form method="get" class="form-inline">
+                    <div class="form-group mx-2">
+                        <label for="date_from" class="mx-2">من تاريخ:</label>
+                        <input type="date" name="date_from" id="date_from" class="form-control"
+                            value="{{ date_from|date:'Y-m-d' }}">
+                    </div>
+                    <div class="form-group mx-2">
+                        <label for="date_to" class="mx-2">إلى تاريخ:</label>
+                        <input type="date" name="date_to" id="date_to" class="form-control"
+                            value="{{ date_to|date:'Y-m-d' }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary mx-2">عرض</button>
+                    <a href="{% url 'financial:income_statement' %}" class="btn btn-secondary">الشهر الحالي</a>
+                </form>
+                <div>
+                    <a href="#" class="btn btn-success" onclick="window.print()">
+                        <i class="fas fa-print"></i> طباعة
+                    </a>
+                </div>
+            </div>
+
+            <!-- عنوان التقرير -->
+            <div class="text-center mb-4">
+                <h4>قائمة الإيرادات والمصروفات (الأرباح والخسائر)</h4>
+                <h5>للفترة من {{ date_from|date:"Y-m-d" }} إلى {{ date_to|date:"Y-m-d" }}</h5>
+            </div>
+            
+            <div class="income-statement-container">
+                <!-- الإيرادات -->
+                <div class="income-statement-section">
+                    <h5 class="income-statement-title">الإيرادات</h5>
+                    {% if income_items %}
+                        {% for item in income_items %}
+                        <div class="account-row">
+                            <span>{{ item.account.name }}</span>
+                            <span>{{ item.amount }}</span>
+                        </div>
+                        {% endfor %}
+                        <div class="account-row total-row">
+                            <span>إجمالي الإيرادات</span>
+                            <span>{{ total_income }}</span>
+                        </div>
+                    {% else %}
+                        <div class="text-center">لا توجد إيرادات لعرضها</div>
+                    {% endif %}
+                </div>
+                
+                <!-- المصروفات -->
+                <div class="income-statement-section">
+                    <h5 class="income-statement-title">المصروفات</h5>
+                    {% if expense_items %}
+                        {% for item in expense_items %}
+                        <div class="account-row">
+                            <span>{{ item.account.name }}</span>
+                            <span>{{ item.amount }}</span>
+                        </div>
+                        {% endfor %}
+                        <div class="account-row total-row">
+                            <span>إجمالي المصروفات</span>
+                            <span>{{ total_expense }}</span>
+                        </div>
+                    {% else %}
+                        <div class="text-center">لا توجد مصروفات لعرضها</div>
+                    {% endif %}
+                </div>
+                
+                <!-- صافي الربح أو الخسارة -->
+                <div class="final-row">
+                    <div class="account-row">
+                        <span>صافي الربح (الخسارة)</span>
+                        <span class="{% if net_income >= 0 %}profit{% else %}loss{% endif %}">
+                            {{ net_income }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تحليل بياني -->
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">تحليل الإيرادات</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">تحليل المصروفات</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="expenseChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $(document).ready(function() {
+        // البيانات للرسم البياني
+        const incomeLabels = [{% for item in income_items %}'{{ item.account.name }}',{% endfor %}];
+        const incomeData = [{% for item in income_items %}{{ item.amount }},{% endfor %}];
+        const incomeColors = generateColors(incomeLabels.length);
+        
+        const expenseLabels = [{% for item in expense_items %}'{{ item.account.name }}',{% endfor %}];
+        const expenseData = [{% for item in expense_items %}{{ item.amount }},{% endfor %}];
+        const expenseColors = generateColors(expenseLabels.length);
+        
+        // إنشاء الرسم البياني للإيرادات
+        if (incomeLabels.length > 0) {
+            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+            new Chart(incomeCtx, {
+                type: 'pie',
+                data: {
+                    labels: incomeLabels,
+                    datasets: [{
+                        data: incomeData,
+                        backgroundColor: incomeColors,
+                        hoverBackgroundColor: incomeColors,
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 10 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    
+                                    // استخدام دالة formatNumber إذا كانت متاحة
+                                    if (typeof formatNumber === 'function') {
+                                        label += formatNumber(context.parsed);
+                                    } else {
+                                        label += context.parsed.toLocaleString('en-US');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // إنشاء الرسم البياني للمصروفات
+        if (expenseLabels.length > 0) {
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(expenseCtx, {
+                type: 'pie',
+                data: {
+                    labels: expenseLabels,
+                    datasets: [{
+                        data: expenseData,
+                        backgroundColor: expenseColors,
+                        hoverBackgroundColor: expenseColors,
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 10 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    
+                                    // استخدام دالة formatNumber إذا كانت متاحة
+                                    if (typeof formatNumber === 'function') {
+                                        label += formatNumber(context.parsed);
+                                    } else {
+                                        label += context.parsed.toLocaleString('en-US');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // توليد ألوان عشوائية
+        function generateColors(count) {
+            const colors = [];
+            const baseColors = [
+                '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+                '#5a5c69', '#6610f2', '#6f42c1', '#e83e8c', '#fd7e14'
+            ];
+            
+            for (let i = 0; i < count; i++) {
+                colors.push(baseColors[i % baseColors.length]);
+            }
+            
+            return colors;
+        }
+    });
+</script>
+{% endblock %} 

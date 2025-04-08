@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<style>
+    .product-images .thumbnail {
+        cursor: pointer;
+        border: 2px solid #ddd;
+        padding: 5px;
+        margin-bottom: 10px;
+        transition: all 0.3s;
+    }
+    .product-images .thumbnail.active {
+        border-color: #0d6efd;
+    }
+    .product-main-image {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .product-main-image img {
+        max-height: 300px;
+        max-width: 100%;
+        object-fit: contain;
+    }
+    .stock-indicator {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 50%;
+        margin-left: 5px;
+    }
+    .stock-indicator.in-stock {
+        background-color: #28a745;
+    }
+    .stock-indicator.low-stock {
+        background-color: #ffc107;
+    }
+    .stock-indicator.out-of-stock {
+        background-color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة (مضمن مباشرة) -->
+    <div class="mb-4">
+        <!-- Breadcrumbs -->
+        <div class="mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'product:product_list' %}">
+                            <i class="fas fa-box me-1"></i>{% trans "المنتجات" %}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center">
+                <div class="me-3">
+                    <i class="fas fa-box fa-2x text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="h3 mb-1">{{ product.name }}</h1>
+                    <p class="text-muted mb-0">رمز المنتج: {{ product.sku }} | الفئة: {{ product.category.name }}</p>
+                </div>
+            </div>
+            <div>
+                <div class="btn-group">
+                    <a href="{% url 'product:product_edit' product.pk %}" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i>{% trans "تعديل" %}
+                    </a>
+                    <a href="{% url 'product:product_delete' product.pk %}" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>{% trans "حذف" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "صورة المنتج" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="product-images">
+                            <div class="product-main-image mb-3">
+                                {% if product.images.exists %}
+                                    {% with primary_image=product.images.filter.first %}
+                                    <img id="main-product-image" src="{{ primary_image.image.url }}" alt="{{ primary_image.alt_text|default:product.name }}" class="img-fluid">
+                                    {% endwith %}
+                                {% else %}
+                                    <img id="main-product-image" src="{% static 'img/product-placeholder.png' %}" alt="{{ product.name }}" class="img-fluid">
+                                {% endif %}
+                            </div>
+                            
+                            {% if product.images.count > 1 %}
+                            <div class="row">
+                                {% for image in product.images.all %}
+                                <div class="col-3">
+                                    <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}" 
+                                         class="img-fluid thumbnail {% if forloop.first %}active{% endif %}"
+                                         data-src="{{ image.image.url }}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "معلومات المنتج" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "رمز المنتج (SKU)" %}</label>
+                                    <p class="form-control-static"><code>{{ product.sku }}</code></p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الباركود" %}</label>
+                                    <p class="form-control-static">
+                                        {% if product.barcode %}
+                                        <code>{{ product.barcode }}</code>
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الفئة" %}</label>
+                                    <p class="form-control-static">
+                                        <a href="{% url 'product:category_detail' product.category.pk %}">
+                                            {{ product.category }}
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "العلامة التجارية" %}</label>
+                                    <p class="form-control-static">
+                                        {% if product.brand %}
+                                        <a href="{% url 'product:brand_detail' product.brand.pk %}">
+                                            {{ product.brand }}
+                                        </a>
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "وحدة القياس" %}</label>
+                                    <p class="form-control-static">{{ product.unit }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الحالة" %}</label>
+                                    <p class="form-control-static">
+                                        {% if product.is_active %}
+                                        <span class="badge bg-success">{% trans "نشط" %}</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">{% trans "غير نشط" %}</span>
+                                        {% endif %}
+                                        
+                                        {% if product.is_featured %}
+                                        <span class="badge bg-info ms-2">{% trans "مميز" %}</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الوصف" %}</label>
+                                    <div class="p-3 bg-light rounded">
+                                        {{ product.description|default:"لا يوجد وصف"|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "معلومات السعر والمخزون" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "سعر التكلفة" %}</label>
+                                    <p class="form-control-static">{{ product.cost_price|custom_number_format }} {% trans "ج.م" %}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "سعر البيع" %}</label>
+                                    <p class="form-control-static">{{ product.selling_price|custom_number_format }} {% trans "ج.م" %}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "هامش الربح" %}</label>
+                                    <p class="form-control-static">{{ product.profit_margin|floatformat:2 }}%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "نسبة الضريبة" %}</label>
+                                    <p class="form-control-static">{{ product.tax_rate }}%</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الحد الأدنى للمخزون" %}</label>
+                                    <p class="form-control-static">{{ product.min_stock }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "الحد الأقصى للمخزون" %}</label>
+                                    <p class="form-control-static">{{ product.max_stock }}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">{% trans "المخزون الحالي" %}</label>
+                                    <p class="form-control-static">
+                                        {% if product.current_stock <= 0 %}
+                                        <span class="badge bg-danger">{% trans "غير متوفر" %}</span>
+                                        <span class="stock-indicator out-of-stock"></span>
+                                        {% elif product.current_stock < product.min_stock %}
+                                        <span class="badge bg-warning">{{ product.current_stock|floatformat:"0" }} ({% trans "منخفض" %})</span>
+                                        <span class="stock-indicator low-stock"></span>
+                                        {% else %}
+                                        <span class="badge bg-success">{{ product.current_stock|floatformat:"0" }}</span>
+                                        <span class="stock-indicator in-stock"></span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if product.variants.exists %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">{% trans "متغيرات المنتج" %}</h5>
+                        <span class="badge bg-primary">{{ product.variants.count }}</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>{% trans "المتغير" %}</th>
+                                        <th>{% trans "SKU" %}</th>
+                                        <th>{% trans "سعر التكلفة" %}</th>
+                                        <th>{% trans "سعر البيع" %}</th>
+                                        <th>{% trans "المخزون" %}</th>
+                                        <th>{% trans "الحالة" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for variant in product.variants.all %}
+                                    <tr>
+                                        <td>{{ variant.name }}</td>
+                                        <td><code>{{ variant.sku }}</code></td>
+                                        <td>{{ variant.cost_price|custom_number_format }} {% trans "ج.م" %}</td>
+                                        <td>{{ variant.selling_price|custom_number_format }} {% trans "ج.م" %}</td>
+                                        <td>{{ variant.stock|floatformat:"0" }}</td>
+                                        <td>
+                                            {% if variant.is_active %}
+                                            <span class="badge bg-success">{% trans "نشط" %}</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">{% trans "غير نشط" %}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "المخزون في المخازن" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if product.stocks.exists %}
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>{% trans "المخزن" %}</th>
+                                        <th>{% trans "الكمية" %}</th>
+                                        <th>{% trans "آخر تحديث" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for stock in product.stocks.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'product:warehouse_detail' stock.warehouse.pk %}">
+                                                {{ stock.warehouse.name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {% if stock.quantity <= 0 %}
+                                            <span class="text-danger">{{ stock.quantity|floatformat:"0" }}</span>
+                                            {% elif stock.quantity < product.min_stock %}
+                                            <span class="text-warning">{{ stock.quantity|floatformat:"0" }}</span>
+                                            {% else %}
+                                            <span class="text-success">{{ stock.quantity|floatformat:"0" }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ stock.updated_at|date:"Y-m-d H:i" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <p class="text-muted text-center py-3">{% trans "لا يوجد مخزون متاح لهذا المنتج" %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تغيير الصورة الرئيسية عند النقر على الصور المصغرة
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('main-product-image');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                mainImage.src = this.dataset.src;
+                
+                // تحديث الصورة النشطة
+                thumbnails.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+{% endblock %} 

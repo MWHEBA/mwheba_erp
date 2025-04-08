@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقرير الاختبارات</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+      direction: rtl;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    .summary {
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .stat {
+      flex: 1;
+      min-width: 150px;
+      background: white;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .progress {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 5px;
+      background-color: #28a745;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .test-case {
+      background-color: white;
+      border-left: 5px solid #ddd;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 0 4px 4px 0;
+    }
+    .test-case.passed {
+      border-color: #28a745;
+    }
+    .test-case.failed {
+      border-color: #dc3545;
+    }
+    .test-case.error {
+      border-color: #fd7e14;
+    }
+    .test-case.skipped {
+      border-color: #6c757d;
+    }
+    .test-name {
+      font-weight: bold;
+    }
+    .test-id {
+      font-size: 0.9em;
+      color: #6c757d;
+    }
+    .test-time {
+      font-size: 0.9em;
+      color: #6c757d;
+    }
+    .test-error {
+      font-family: monospace;
+      background-color: #f8f9fa;
+      padding: 10px;
+      margin-top: 10px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      color: #dc3545;
+    }
+    .timestamp {
+      font-size: 0.9em;
+      color: #6c757d;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>تقرير الاختبارات</h1>
+  
+  <div class="summary">
+    <h2>ملخص</h2>
+    <div class="stats">
+      <div class="stat">
+        <div>إجمالي الاختبارات</div>
+        <div><strong>33</strong></div>
+      </div>
+      <div class="stat" style="color: #28a745;">
+        <div>ناجح</div>
+        <div><strong>31</strong></div>
+      </div>
+      <div class="stat" style="color: #dc3545;">
+        <div>فاشل</div>
+        <div><strong>0</strong></div>
+      </div>
+      <div class="stat" style="color: #fd7e14;">
+        <div>أخطاء</div>
+        <div><strong>2</strong></div>
+      </div>
+      <div class="stat" style="color: #6c757d;">
+        <div>تم تخطيه</div>
+        <div><strong>0</strong></div>
+      </div>
+    </div>
+    
+    <div>
+      نسبة النجاح: <strong>93%</strong>
+      <div class="progress">
+        <div class="progress-bar" style="width: 93%"></div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="section">
+    <h2>الاختبارات الناجحة</h2>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تحويل النص العربي إلى slug</div>
+      <div class="test-id">utils.tests.HelperFunctionsTest.test_arabic_slugify</div>
+      <div class="test-time">الوقت: 0.000 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار حساب ضريبة القيمة المضافة</div>
+      <div class="test-id">utils.tests.HelperFunctionsTest.test_calculate_vat</div>
+      <div class="test-time">الوقت: 0.000 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تنسيق العملة</div>
+      <div class="test-id">utils.tests.HelperFunctionsTest.test_format_currency</div>
+      <div class="test-time">الوقت: 0.000 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تنسيق التاريخ بالعربية</div>
+      <div class="test-id">utils.tests.HelperFunctionsTest.test_arabic_date_format</div>
+      <div class="test-time">الوقت: 0.001 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار توليد كود عشوائي</div>
+      <div class="test-id">utils.tests.HelperFunctionsTest.test_generate_random_code</div>
+      <div class="test-time">الوقت: 0.002 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار الوصول للملف الشخصي بدون تسجيل الدخول</div>
+      <div class="test-id">users.tests.UserProfileTest.test_access_profile_without_login</div>
+      <div class="test-time">الوقت: 0.170 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار إنشاء المستخدم المشرف بشكل صحيح</div>
+      <div class="test-id">users.tests.UserModelTest.test_admin_user_creation</div>
+      <div class="test-time">الوقت: 0.301 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تصفية سجلات النظام</div>
+      <div class="test-id">utils.tests.LogsTest.test_logs_filtering</div>
+      <div class="test-time">الوقت: 0.305 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار إنشاء المستخدم بشكل صحيح</div>
+      <div class="test-id">users.tests.UserModelTest.test_user_creation</div>
+      <div class="test-time">الوقت: 0.309 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار إنشاء مستخدم بدون اسم مستخدم</div>
+      <div class="test-id">users.tests.UserModelTest.test_create_user_without_username</div>
+      <div class="test-time">الوقت: 0.309 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تصدير البيانات إلى PDF</div>
+      <div class="test-id">utils.tests.ExportImportTest.test_export_to_pdf</div>
+      <div class="test-time">الوقت: 0.313 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار إنشاء سجل نظام</div>
+      <div class="test-id">utils.tests.LogsTest.test_log_creation</div>
+      <div class="test-time">الوقت: 0.315 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار التمثيل النصي للمستخدم</div>
+      <div class="test-id">users.tests.UserModelTest.test_user_string_representation</div>
+      <div class="test-time">الوقت: 0.316 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار الوصول للملف الشخصي بعد تسجيل الدخول</div>
+      <div class="test-id">users.tests.UserProfileTest.test_access_profile_with_login</div>
+      <div class="test-time">الوقت: 0.324 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تحديث بيانات الملف الشخصي</div>
+      <div class="test-id">users.tests.UserProfileTest.test_update_profile</div>
+      <div class="test-time">الوقت: 0.327 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار عرض صفحة تسجيل الدخول</div>
+      <div class="test-id">users.tests.UserAuthViewsTest.test_login_view_get</div>
+      <div class="test-time">الوقت: 0.328 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار الوصول لصفحة محمية بدون تسجيل الدخول</div>
+      <div class="test-id">users.tests.UserAuthViewsTest.test_access_protected_view_without_login</div>
+      <div class="test-time">الوقت: 0.331 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار استيراد البيانات من Excel</div>
+      <div class="test-id">utils.tests.ExportImportTest.test_import_from_excel</div>
+      <div class="test-time">الوقت: 0.334 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تحديث صورة الملف الشخصي</div>
+      <div class="test-id">users.tests.UserProfileTest.test_update_profile_picture</div>
+      <div class="test-time">الوقت: 0.351 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار إنشاء مستخدم ببريد إلكتروني غير صالح</div>
+      <div class="test-id">users.tests.UserModelTest.test_create_user_with_invalid_email</div>
+      <div class="test-time">الوقت: 0.466 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تنزيل نسخة احتياطية من قاعدة البيانات</div>
+      <div class="test-id">utils.tests.BackupRestoreTest.test_backup_download</div>
+      <div class="test-time">الوقت: 0.468 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تسجيل الخروج</div>
+      <div class="test-id">users.tests.UserAuthViewsTest.test_logout_view</div>
+      <div class="test-time">الوقت: 0.486 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تسجيل الدخول بنجاح</div>
+      <div class="test-id">users.tests.UserAuthViewsTest.test_login_view_post_valid</div>
+      <div class="test-time">الوقت: 0.516 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تصدير البيانات إلى Excel</div>
+      <div class="test-id">utils.tests.ExportImportTest.test_export_to_excel</div>
+      <div class="test-time">الوقت: 0.600 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار صلاحيات الوصول لاستعادة قاعدة البيانات</div>
+      <div class="test-id">utils.tests.BackupRestoreTest.test_restore_access_permissions</div>
+      <div class="test-time">الوقت: 0.634 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار صلاحيات الوصول لنسخ قاعدة البيانات احتياطياً</div>
+      <div class="test-id">utils.tests.BackupRestoreTest.test_backup_access_permissions</div>
+      <div class="test-time">الوقت: 0.651 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار صلاحيات المستخدم المشرف (لديه جميع الصلاحيات)</div>
+      <div class="test-id">users.tests.UserPermissionsTest.test_superuser_permissions</div>
+      <div class="test-time">الوقت: 0.767 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار انتماء المستخدم للمجموعة</div>
+      <div class="test-id">users.tests.UserPermissionsTest.test_user_in_group</div>
+      <div class="test-time">الوقت: 0.767 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار امتلاك المستخدم للإذن</div>
+      <div class="test-id">users.tests.UserPermissionsTest.test_user_has_permission</div>
+      <div class="test-time">الوقت: 0.783 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار تغيير كلمة مرور المستخدم</div>
+      <div class="test-id">users.tests.UserModelTest.test_user_password_change</div>
+      <div class="test-time">الوقت: 0.783 ثانية</div>
+    </div>
+
+    <div class="test-case passed">
+      <div class="test-name">اختبار المستخدم الموظف بدون صلاحيات محددة</div>
+      <div class="test-id">users.tests.UserPermissionsTest.test_staff_user_without_permissions</div>
+      <div class="test-time">الوقت: 0.784 ثانية</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>أخطاء الاختبارات</h2>
+
+    <div class="test-case error">
+      <div class="test-name">اختبار محاولة تسجيل دخول غير صحيحة</div>
+      <div class="test-id">users.tests.UserAuthViewsTest.test_login_view_post_invalid</div>
+      <div class="test-time">الوقت: 0.467 ثانية</div>
+      <div class="test-error">TypeError: argument of type &#x27;NoneType&#x27; is not iterable</div>
+    </div>
+
+    <div class="test-case error">
+      <div class="test-name">اختبار عرض سجلات النظام</div>
+      <div class="test-id">utils.tests.LogsTest.test_logs_view</div>
+      <div class="test-time">الوقت: 0.647 ثانية</div>
+      <div class="test-error">TypeError: argument of type &#x27;NoneType&#x27; is not iterable</div>
+    </div>
+  </div>
+
+  <div class="timestamp">
+    تم إنشاء هذا التقرير في: 2025-04-05 22:10:20
+  </div>
+</body>
+</html>

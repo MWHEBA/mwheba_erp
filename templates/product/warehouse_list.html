@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة (مضمن مباشرة) -->
+    <div class="mb-4">
+        <!-- Breadcrumbs -->
+        {% if breadcrumb_items %}
+        <div class="mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    {% for item in breadcrumb_items %}
+                        {% if forloop.last or item.active %}
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {% if item.icon %}<i class="{{ item.icon }} me-1"></i>{% endif %}
+                                {{ item.title }}
+                            </li>
+                        {% else %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ item.url }}">
+                                    {% if item.icon %}<i class="{{ item.icon }} me-1"></i>{% endif %}
+                                    {{ item.title }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </nav>
+        </div>
+        {% endif %}
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center">
+                {% if page_icon %}
+                    <div class="me-3">
+                        <i class="{{ page_icon }} fa-2x text-primary"></i>
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="h3 mb-1">{{ page_title }}</h1>
+                    <p class="text-muted mb-0">{% trans "إدارة المخازن ومتابعة المخزون" %}</p>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'product:warehouse_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>{% trans "إضافة مخزن" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <form method="get" id="warehouse-filter-form">
+                    <div class="filter-box">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="search" class="form-label">{% trans "بحث" %}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" id="search" name="search" placeholder="{% trans "اسم أو كود المخزن" %}" value="{{ request.GET.search|default:'' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="warehouse-status-filter" class="form-label">{% trans "الحالة" %}</label>
+                                <select class="form-select" id="warehouse-status-filter" name="status">
+                                    <option value="all" {% if request.GET.status == 'all' or not request.GET.status %}selected{% endif %}>{% trans "الكل" %}</option>
+                                    <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>{% trans "نشط" %}</option>
+                                    <option value="inactive" {% if request.GET.status == 'inactive' %}selected{% endif %}>{% trans "غير نشط" %}</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-filter me-1"></i>{% trans "تصفية" %}
+                                </button>
+                                <a href="{% url 'product:warehouse_list' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-redo-alt me-1"></i>{% trans "إعادة ضبط" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card card-stats bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box bg-white text-primary rounded-circle">
+                                        <i class="fas fa-warehouse fa-2x"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h2 class="stat-number">{{ total_warehouses }}</h2>
+                                        <p class="stat-title text-white-50">{% trans "إجمالي المخازن" %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-stats bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box bg-white text-success rounded-circle">
+                                        <i class="fas fa-check-circle fa-2x"></i>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h2 class="stat-number">{{ active_warehouses }}</h2>
+                                        <p class="stat-title text-white-50">{% trans "المخازن النشطة" %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">{% trans "المخازن" %}</h5>
+                    <span class="badge bg-primary">{{ warehouses.count }} {% trans "مخزن" %}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="warehousesTable">
+                        <thead>
+                            <tr>
+                                <th>{% trans "الكود" %}</th>
+                                <th>{% trans "الاسم" %}</th>
+                                <th>{% trans "الموقع" %}</th>
+                                <th>{% trans "المسؤول" %}</th>
+                                <th>{% trans "عدد المنتجات" %}</th>
+                                <th>{% trans "الحالة" %}</th>
+                                <th>{% trans "إجراءات" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for warehouse in warehouses %}
+                            <tr>
+                                <td>{{ warehouse.code }}</td>
+                                <td>{{ warehouse.name }}</td>
+                                <td>{{ warehouse.location|default:"—" }}</td>
+                                <td>{{ warehouse.manager|default:"—" }}</td>
+                                <td>{{ warehouse.stocks.count }}</td>
+                                <td>
+                                    {% if warehouse.is_active %}
+                                    <span class="status-badge active">{% trans "نشط" %}</span>
+                                    {% else %}
+                                    <span class="status-badge inactive">{% trans "غير نشط" %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{% url 'product:warehouse_detail' warehouse.id %}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="{% trans 'عرض' %}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{% url 'product:warehouse_edit' warehouse.id %}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="{% trans 'تعديل' %}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'product:warehouse_delete' warehouse.id %}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="{% trans 'حذف' %}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-4">
+                                    <div class="empty-state">
+                                        <i class="fas fa-warehouse icon"></i>
+                                        <h4>{% trans "لا توجد مخازن" %}</h4>
+                                        <p>{% trans "لم يتم إضافة أي مخازن بعد. يمكنك إضافة مخزن جديد من خلال الضغط على زر إضافة مخزن." %}</p>
+                                        <a href="{% url 'product:warehouse_create' %}" class="btn btn-primary">
+                                            <i class="fas fa-plus-circle me-1"></i>{% trans "إضافة مخزن" %}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/stock.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تفعيل تنسيق الجدول باستخدام الدالة المساعدة
+        if (document.querySelector('.table')) {
+            initDataTableArabic('.table', {
+                order: [[1, 'asc']]
+            });
+        }
+    });
+</script>
+{% endblock %} 

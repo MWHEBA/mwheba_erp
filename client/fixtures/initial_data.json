@@ -1,0 +1,100 @@
+[
+    {
+        "model": "client.customer",
+        "pk": 1,
+        "fields": {
+            "name": "عميل نقدي",
+            "phone": "01000000000",
+            "email": "cash@example.com",
+            "address": "القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST1_UPI0"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 2,
+        "fields": {
+            "name": "محمد أحمد",
+            "phone": "01011223344",
+            "email": "mohamed@example.com",
+            "address": "شارع التحرير، القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST2_GQSE"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 3,
+        "fields": {
+            "name": "شركة المستقبل للتجارة",
+            "phone": "01022334455",
+            "email": "future@example.com",
+            "address": "مدينة العبور، القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST3_96TX"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 4,
+        "fields": {
+            "name": "متجر الأنيق للملابس",
+            "phone": "01033445566",
+            "email": "elegant@example.com",
+            "address": "مدينة نصر، القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST4_2ABN"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 5,
+        "fields": {
+            "name": "فاطمة محمود",
+            "phone": "01044556677",
+            "email": "fatma@example.com",
+            "address": "المهندسين، الجيزة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST5_7RAK"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 6,
+        "fields": {
+            "name": "شركة التقنية للإلكترونيات",
+            "phone": "01055667788",
+            "email": "tech@example.com",
+            "address": "6 أكتوبر، الجيزة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST6_Y1Y2"
+        }
+    },
+    {
+        "model": "client.customer",
+        "pk": 7,
+        "fields": {
+            "name": "عميل قديم غير نشط",
+            "phone": "01066778899",
+            "email": "inactive@example.com",
+            "address": "الإسكندرية",
+            "is_active": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "code": "CUST7_84VT"
+        }
+    }
+]

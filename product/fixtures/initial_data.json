@@ -1,0 +1,566 @@
+[
+    {
+        "model": "product.category",
+        "pk": 1,
+        "fields": {
+            "name": "إلكترونيات",
+            "description": "منتجات إلكترونية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 2,
+        "fields": {
+            "name": "ملابس",
+            "description": "ملابس رجالية ونسائية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 3,
+        "fields": {
+            "name": "أجهزة منزلية",
+            "description": "أجهزة كهربائية للمنزل",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 4,
+        "fields": {
+            "name": "أثاث",
+            "description": "أثاث للمنزل والمكتب",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 5,
+        "fields": {
+            "name": "ملابس رجالية",
+            "parent": 2,
+            "description": "ملابس للرجال",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.category",
+        "pk": 6,
+        "fields": {
+            "name": "ملابس نسائية",
+            "parent": 2,
+            "description": "ملابس للنساء",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 1,
+        "fields": {
+            "name": "سامسونج",
+            "description": "علامة تجارية رائدة في الإلكترونيات",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 2,
+        "fields": {
+            "name": "نايكي",
+            "description": "علامة تجارية رائدة في الملابس الرياضية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 3,
+        "fields": {
+            "name": "آبل",
+            "description": "علامة تجارية رائدة في التكنولوجيا",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 4,
+        "fields": {
+            "name": "إل جي",
+            "description": "علامة تجارية للأجهزة الكهربائية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.brand",
+        "pk": 5,
+        "fields": {
+            "name": "ايكيا",
+            "description": "علامة تجارية للأثاث",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.unit",
+        "pk": 1,
+        "fields": {
+            "name": "قطعة",
+            "symbol": "قطعة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.unit",
+        "pk": 2,
+        "fields": {
+            "name": "متر",
+            "symbol": "م",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.unit",
+        "pk": 3,
+        "fields": {
+            "name": "كيلوجرام",
+            "symbol": "كجم",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.unit",
+        "pk": 4,
+        "fields": {
+            "name": "لتر",
+            "symbol": "ل",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.warehouse",
+        "pk": 1,
+        "fields": {
+            "name": "المخزن الرئيسي",
+            "code": "WH001",
+            "location": "القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.warehouse",
+        "pk": 2,
+        "fields": {
+            "name": "مخزن الفرع",
+            "code": "WH002",
+            "location": "الإسكندرية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.warehouse",
+        "pk": 3,
+        "fields": {
+            "name": "مخزن الأجهزة",
+            "code": "WH003",
+            "location": "القاهرة",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 1,
+        "fields": {
+            "name": "هاتف سامسونج جالاكسي",
+            "category": 1,
+            "brand": 1,
+            "description": "هاتف ذكي متطور",
+            "sku": "PH001",
+            "barcode": "123456789",
+            "unit": 1,
+            "cost_price": "5000.00",
+            "selling_price": "6000.00",
+            "min_stock": 10,
+            "max_stock": 100,
+            "is_active": true,
+            "is_featured": true,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 2,
+        "fields": {
+            "name": "قميص رياضي",
+            "category": 5,
+            "brand": 2,
+            "description": "قميص رياضي قطني",
+            "sku": "CL001",
+            "barcode": "987654321",
+            "unit": 1,
+            "cost_price": "200.00",
+            "selling_price": "300.00",
+            "min_stock": 20,
+            "max_stock": 200,
+            "is_active": true,
+            "is_featured": false,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 3,
+        "fields": {
+            "name": "آيفون 14 برو",
+            "category": 1,
+            "brand": 3,
+            "description": "هاتف ذكي من آبل",
+            "sku": "PH002",
+            "barcode": "555555555",
+            "unit": 1,
+            "cost_price": "15000.00",
+            "selling_price": "18000.00",
+            "min_stock": 5,
+            "max_stock": 50,
+            "is_active": true,
+            "is_featured": true,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 4,
+        "fields": {
+            "name": "تلفزيون إل جي 55 بوصة",
+            "category": 1,
+            "brand": 4,
+            "description": "تلفزيون ذكي LED",
+            "sku": "TV001",
+            "barcode": "444444444",
+            "unit": 1,
+            "cost_price": "8000.00",
+            "selling_price": "10000.00",
+            "min_stock": 3,
+            "max_stock": 20,
+            "is_active": true,
+            "is_featured": false,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 5,
+        "fields": {
+            "name": "طاولة مكتب",
+            "category": 4,
+            "brand": 5,
+            "description": "طاولة مكتب خشبية",
+            "sku": "FN001",
+            "barcode": "777777777",
+            "unit": 1,
+            "cost_price": "1500.00",
+            "selling_price": "2000.00",
+            "min_stock": 2,
+            "max_stock": 15,
+            "is_active": true,
+            "is_featured": false,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 6,
+        "fields": {
+            "name": "غسالة ملابس",
+            "category": 3,
+            "brand": 4,
+            "description": "غسالة أوتوماتيك 9 كيلو",
+            "sku": "WM001",
+            "barcode": "888888888",
+            "unit": 1,
+            "cost_price": "6000.00",
+            "selling_price": "7500.00",
+            "min_stock": 3,
+            "max_stock": 15,
+            "is_active": true,
+            "is_featured": false,
+            "tax_rate": "14.00",
+            "discount_rate": "0.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 7,
+        "fields": {
+            "name": "فستان نسائي",
+            "category": 6,
+            "brand": 2,
+            "description": "فستان نسائي أنيق",
+            "sku": "CL002",
+            "barcode": "999999999",
+            "unit": 1,
+            "cost_price": "400.00",
+            "selling_price": "600.00",
+            "min_stock": 10,
+            "max_stock": 100,
+            "is_active": true,
+            "is_featured": true,
+            "tax_rate": "14.00",
+            "discount_rate": "5.00",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "warehouse": 1,
+            "quantity": 50,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 2,
+        "fields": {
+            "product": 2,
+            "warehouse": 1,
+            "quantity": 100,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 3,
+        "fields": {
+            "product": 3,
+            "warehouse": 3,
+            "quantity": 30,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 4,
+        "fields": {
+            "product": 4,
+            "warehouse": 3,
+            "quantity": 10,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 5,
+        "fields": {
+            "product": 5,
+            "warehouse": 2,
+            "quantity": 5,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 6,
+        "fields": {
+            "product": 6,
+            "warehouse": 3,
+            "quantity": 8,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stock",
+        "pk": 7,
+        "fields": {
+            "product": 7,
+            "warehouse": 1,
+            "quantity": 50,
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "product.stockmovement",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "warehouse": 1,
+            "movement_type": "in",
+            "quantity": 50,
+            "reference_number": "PURCHASE-PUR0001-ITEM1",
+            "document_type": "purchase",
+            "document_number": "PUR0001",
+            "notes": "استلام من فاتورة المشتريات رقم PUR0001",
+            "timestamp": "2024-01-01T00:00:00Z",
+            "created_by": 1,
+            "quantity_before": 0,
+            "quantity_after": 50,
+            "number": "MOV0001"
+        }
+    },
+    {
+        "model": "product.stockmovement",
+        "pk": 2,
+        "fields": {
+            "product": 2,
+            "warehouse": 1,
+            "movement_type": "in",
+            "quantity": 100,
+            "reference_number": "PURCHASE-INI",
+            "document_type": "opening",
+            "document_number": "INI0001",
+            "notes": "رصيد افتتاحي",
+            "timestamp": "2024-01-01T00:00:00Z",
+            "created_by": 1,
+            "quantity_before": 0,
+            "quantity_after": 100,
+            "number": "MOV0002"
+        }
+    },
+    {
+        "model": "product.stockmovement",
+        "pk": 3,
+        "fields": {
+            "product": 3,
+            "warehouse": 3,
+            "movement_type": "in",
+            "quantity": 30,
+            "reference_number": "PURCHASE-INI",
+            "document_type": "opening",
+            "document_number": "INI0002",
+            "notes": "رصيد افتتاحي",
+            "timestamp": "2024-01-01T00:00:00Z",
+            "created_by": 1,
+            "quantity_before": 0,
+            "quantity_after": 30,
+            "number": "MOV0003"
+        }
+    },
+    {
+        "model": "product.stockmovement",
+        "pk": 4,
+        "fields": {
+            "product": 1,
+            "warehouse": 1,
+            "movement_type": "out",
+            "quantity": 1,
+            "reference_number": "SALE-SALE0001-ITEM1",
+            "document_type": "sale",
+            "document_number": "SALE0001",
+            "notes": "بيع من فاتورة المبيعات رقم SALE0001",
+            "timestamp": "2024-01-01T01:00:00Z",
+            "created_by": 1,
+            "quantity_before": 50,
+            "quantity_after": 49,
+            "number": "MOV0004"
+        }
+    },
+    {
+        "model": "product.serialnumber",
+        "pk": 1,
+        "fields": {
+            "document_type": "sale",
+            "last_number": 5,
+            "prefix": "SALE",
+            "year": 2024
+        }
+    },
+    {
+        "model": "product.serialnumber",
+        "pk": 2,
+        "fields": {
+            "document_type": "purchase",
+            "last_number": 5,
+            "prefix": "PUR",
+            "year": 2024
+        }
+    },
+    {
+        "model": "product.serialnumber",
+        "pk": 3,
+        "fields": {
+            "document_type": "stock_movement",
+            "last_number": 10,
+            "prefix": "MOV",
+            "year": 2024
+        }
+    },
+    {
+        "model": "product.serialnumber",
+        "pk": 4,
+        "fields": {
+            "document_type": "purchase_return",
+            "last_number": 3,
+            "prefix": "RET",
+            "year": 2024
+        }
+    },
+    {
+        "model": "product.serialnumber",
+        "pk": 5,
+        "fields": {
+            "document_type": "sale_return",
+            "last_number": 3,
+            "prefix": "SRET",
+            "year": 2024
+        }
+    }
+] 

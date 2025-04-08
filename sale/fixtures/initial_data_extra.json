@@ -1,0 +1,296 @@
+[
+    {
+        "model": "sale.sale",
+        "pk": 6,
+        "fields": {
+            "number": "SALE0006",
+            "date": "2024-01-28",
+            "customer": 1,
+            "warehouse": 2,
+            "subtotal": "4500.00",
+            "discount": "500.00",
+            "tax": "560.00",
+            "total": "4560.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مبيعات أثاث",
+            "created_by": 4,
+            "created_at": "2024-01-28T10:00:00Z",
+            "updated_at": "2024-01-28T10:00:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 7,
+        "fields": {
+            "number": "SALE0007",
+            "date": "2024-01-30",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "8000.00",
+            "discount": "0.00",
+            "tax": "1120.00",
+            "total": "9120.00",
+            "payment_method": "credit",
+            "payment_status": "unpaid",
+            "notes": "فاتورة مبيعات أجهزة إلكترونية",
+            "created_by": 5,
+            "created_at": "2024-01-30T14:20:00Z",
+            "updated_at": "2024-01-30T14:20:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 8,
+        "fields": {
+            "number": "SALE0008",
+            "date": "2024-01-31",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "1200.00",
+            "discount": "0.00",
+            "tax": "168.00",
+            "total": "1368.00",
+            "payment_method": "cash",
+            "payment_status": "paid",
+            "notes": "فاتورة مبيعات نقدية",
+            "created_by": 4,
+            "created_at": "2024-01-31T09:45:00Z",
+            "updated_at": "2024-01-31T09:45:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 9,
+        "fields": {
+            "number": "SALE0009",
+            "date": "2024-02-02",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "5000.00",
+            "discount": "1000.00",
+            "tax": "560.00",
+            "total": "4560.00",
+            "payment_method": "bank_transfer",
+            "payment_status": "paid",
+            "notes": "فاتورة مبيعات أجهزة كمبيوتر",
+            "created_by": 5,
+            "created_at": "2024-02-02T13:15:00Z",
+            "updated_at": "2024-02-02T13:15:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 10,
+        "fields": {
+            "number": "SALE0010",
+            "date": "2024-02-05",
+            "customer": 1,
+            "warehouse": 3,
+            "subtotal": "20000.00",
+            "discount": "2000.00",
+            "tax": "2520.00",
+            "total": "20520.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مبيعات أجهزة متنوعة",
+            "created_by": 4,
+            "created_at": "2024-02-05T11:30:00Z",
+            "updated_at": "2024-02-05T11:30:00Z"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 8,
+        "fields": {
+            "sale": 6,
+            "product": 5,
+            "quantity": 3,
+            "unit_price": "1500.00",
+            "discount": "500.00",
+            "total": "4000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 9,
+        "fields": {
+            "sale": 7,
+            "product": 4,
+            "quantity": 1,
+            "unit_price": "10000.00",
+            "discount": "2000.00",
+            "total": "8000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 10,
+        "fields": {
+            "sale": 8,
+            "product": 2,
+            "quantity": 4,
+            "unit_price": "300.00",
+            "discount": "0.00",
+            "total": "1200.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 11,
+        "fields": {
+            "sale": 9,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "5000.00",
+            "discount": "1000.00",
+            "total": "4000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 12,
+        "fields": {
+            "sale": 10,
+            "product": 3,
+            "quantity": 1,
+            "unit_price": "18000.00",
+            "discount": "2000.00",
+            "total": "16000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 13,
+        "fields": {
+            "sale": 10,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "6000.00",
+            "discount": "2000.00",
+            "total": "4000.00"
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 5,
+        "fields": {
+            "sale": 6,
+            "amount": "2000.00",
+            "payment_date": "2024-01-28",
+            "payment_method": "cash",
+            "reference_number": "PAY005",
+            "notes": "دفعة أولى",
+            "created_at": "2024-01-28T10:00:00Z",
+            "created_by": 4
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 6,
+        "fields": {
+            "sale": 8,
+            "amount": "1368.00",
+            "payment_date": "2024-01-31",
+            "payment_method": "cash",
+            "reference_number": "PAY006",
+            "notes": "دفعة كاملة نقدية",
+            "created_at": "2024-01-31T09:45:00Z",
+            "created_by": 4
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 7,
+        "fields": {
+            "sale": 9,
+            "amount": "4560.00",
+            "payment_date": "2024-02-02",
+            "payment_method": "bank_transfer",
+            "reference_number": "TRF007",
+            "notes": "دفعة كاملة تحويل بنكي",
+            "created_at": "2024-02-02T13:15:00Z",
+            "created_by": 5
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 8,
+        "fields": {
+            "sale": 10,
+            "amount": "10000.00",
+            "payment_date": "2024-02-05",
+            "payment_method": "bank_transfer",
+            "reference_number": "TRF008",
+            "notes": "دفعة أولى",
+            "created_at": "2024-02-05T11:30:00Z",
+            "created_by": 4
+        }
+    },
+    {
+        "model": "sale.salereturn",
+        "pk": 4,
+        "fields": {
+            "number": "SRET-GHI012",
+            "date": "2024-02-01",
+            "sale": 6,
+            "warehouse": 2,
+            "subtotal": "1500.00",
+            "discount": "0.00",
+            "tax": "210.00",
+            "total": "1710.00",
+            "status": "confirmed",
+            "notes": "طاولة مكتب معيبة",
+            "created_at": "2024-02-01T11:20:00Z",
+            "updated_at": "2024-02-01T11:20:00Z",
+            "created_by": 4
+        }
+    },
+    {
+        "model": "sale.salereturn",
+        "pk": 5,
+        "fields": {
+            "number": "SRET-JKL345",
+            "date": "2024-02-04",
+            "sale": 9,
+            "warehouse": 1,
+            "subtotal": "5000.00",
+            "discount": "1000.00",
+            "tax": "560.00",
+            "total": "4560.00",
+            "status": "confirmed",
+            "notes": "هاتف به عطل مصنعي",
+            "created_at": "2024-02-04T10:15:00Z",
+            "updated_at": "2024-02-04T10:15:00Z",
+            "created_by": 5
+        }
+    },
+    {
+        "model": "sale.salereturnitem",
+        "pk": 4,
+        "fields": {
+            "sale_return": 4,
+            "sale_item": 8,
+            "product": 5,
+            "quantity": 1,
+            "unit_price": "1500.00",
+            "discount": "0.00",
+            "total": "1500.00",
+            "reason": "عيب في الصناعة"
+        }
+    },
+    {
+        "model": "sale.salereturnitem",
+        "pk": 5,
+        "fields": {
+            "sale_return": 5,
+            "sale_item": 11,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "5000.00",
+            "discount": "1000.00",
+            "total": "4000.00",
+            "reason": "عطل في الهاتف"
+        }
+    }
+] 

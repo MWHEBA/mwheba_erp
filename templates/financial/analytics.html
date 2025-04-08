@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .section-container {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    color: #344767;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <!-- عنوان الصفحة -->
+  <div class="row mb-4">
+    <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+      <div class="d-flex align-items-center">
+        <div class="me-3">
+          <div class="bg-primary bg-opacity-10 text-primary p-3 rounded">
+            <i class="fas fa-chart-line fa-2x"></i>
+          </div>
+        </div>
+        <div>
+          <h1 class="h3 mb-1 fw-bold text-dark">{% trans "التحليلات المالية" %}</h1>
+          <p class="text-muted mb-0">{% trans "تحليل البيانات المالية وعرض المؤشرات الرئيسية" %}</p>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-primary" id="print-report">
+          <i class="fas fa-file-pdf me-2"></i>{% trans "تصدير التقرير" %}
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- الإحصائيات الأساسية - نموذج كروت بديل -->
+  <div class="section-container">
+    <h5 class="section-title"><i class="fas fa-chart-bar me-2"></i>{% trans "المؤشرات المالية الرئيسية" %}</h5>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-alt primary">
+          <div class="stats-card-alt-icon">
+            <i class="fas fa-money-bill-wave"></i>
+          </div>
+          <div class="stats-card-alt-content">
+            <div class="stats-card-alt-title">{% trans "الإيرادات الشهرية" %}</div>
+            <div class="stats-card-alt-value">{{ monthly_income|default:"32,500"|custom_number_format }}</div>
+            <div class="stats-card-alt-unit">{% trans "جنيه مصري" %}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-alt success">
+          <div class="stats-card-alt-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stats-card-alt-content">
+            <div class="stats-card-alt-title">{% trans "هامش الربح" %}</div>
+            <div class="stats-card-alt-value">{{ profit_margin|default:"24" }}</div>
+            <div class="stats-card-alt-unit">{% trans "%" %}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-alt danger">
+          <div class="stats-card-alt-icon">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+          <div class="stats-card-alt-content">
+            <div class="stats-card-alt-title">{% trans "متوسط قيمة الفاتورة" %}</div>
+            <div class="stats-card-alt-value">{{ avg_invoice|default:"1,250"|custom_number_format }}</div>
+            <div class="stats-card-alt-unit">{% trans "جنيه مصري" %}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-alt info">
+          <div class="stats-card-alt-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="stats-card-alt-content">
+            <div class="stats-card-alt-title">{% trans "المعاملات اليومية" %}</div>
+            <div class="stats-card-alt-value">{{ daily_transactions|default:"14" }}</div>
+            <div class="stats-card-alt-unit">{% trans "معاملة/يوم" %}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- التحليلات المتقدمة - كروت بخلفية ملونة -->
+  <div class="section-container">
+    <h5 class="section-title"><i class="fas fa-analytics me-2"></i>{% trans "مؤشرات الأداء" %}</h5>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-gradient primary">
+          <div class="stats-card-gradient-icon">
+            <i class="fas fa-percent"></i>
+          </div>
+          <div class="stats-card-gradient-title">{% trans "معدل التحصيل" %}</div>
+          <div class="stats-card-gradient-value">{{ collection_rate|default:"87" }}</div>
+          <div class="stats-card-gradient-unit">{% trans "%" %}</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-gradient success">
+          <div class="stats-card-gradient-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="stats-card-gradient-title">{% trans "عملاء جدد" %}</div>
+          <div class="stats-card-gradient-value">{{ new_customers|default:"24" }}</div>
+          <div class="stats-card-gradient-unit">{% trans "هذا الشهر" %}</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-gradient warning">
+          <div class="stats-card-gradient-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stats-card-gradient-title">{% trans "متوسط دورة المبيعات" %}</div>
+          <div class="stats-card-gradient-value">{{ sales_cycle|default:"4.2" }}</div>
+          <div class="stats-card-gradient-unit">{% trans "أيام" %}</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="stats-card-gradient danger">
+          <div class="stats-card-gradient-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <div class="stats-card-gradient-title">{% trans "ديون مستحقة" %}</div>
+          <div class="stats-card-gradient-value">{{ due_debt|default:"18,750"|custom_number_format }}</div>
+          <div class="stats-card-gradient-unit">{% trans "جنيه مصري" %}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- قسم لبيانات الرسوم البيانية -->
+  <div class="row">
+    <div class="col-lg-8 mb-4">
+      <div class="info-card">
+        <div class="info-card-header">
+          <h5 class="info-card-title">{% trans "الإيرادات والمصروفات" %}</h5>
+          <div class="info-card-subtitle">{% trans "آخر 6 أشهر" %}</div>
+        </div>
+        <div class="info-card-body">
+          <canvas id="revenue-expenses-chart" height="300"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="info-card h-100">
+        <div class="info-card-header">
+          <h5 class="info-card-title">{% trans "توزيع المصروفات" %}</h5>
+        </div>
+        <div class="info-card-body d-flex align-items-center justify-content-center">
+          <canvas id="expenses-distribution-chart" height="250"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    // رسم بياني للإيرادات والمصروفات
+    const revenueExpensesChart = new Chart(
+      document.getElementById('revenue-expenses-chart'),
+      {
+        type: 'line',
+        data: {
+          labels: ['يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو'],
+          datasets: [
+            {
+              label: 'الإيرادات',
+              data: [28500, 32000, 35500, 31000, 38000, 41500],
+              borderColor: '#4361ee',
+              backgroundColor: 'rgba(67, 97, 238, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4
+            },
+            {
+              label: 'المصروفات',
+              data: [22000, 25000, 26500, 23000, 29000, 31500],
+              borderColor: '#e74c3c',
+              backgroundColor: 'rgba(231, 76, 60, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              rtl: true
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toLocaleString() + ' ج.م';
+                }
+              }
+            }
+          }
+        }
+      }
+    );
+    
+    // رسم بياني لتوزيع المصروفات
+    const expensesDistributionChart = new Chart(
+      document.getElementById('expenses-distribution-chart'),
+      {
+        type: 'doughnut',
+        data: {
+          labels: ['رواتب', 'إيجارات', 'مصروفات تشغيل', 'خدمات', 'أخرى'],
+          datasets: [
+            {
+              data: [45, 15, 20, 12, 8],
+              backgroundColor: [
+                '#4361ee',
+                '#2ecc71',
+                '#f39c12',
+                '#3498db',
+                '#e74c3c'
+              ],
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              rtl: true
+            }
+          }
+        }
+      }
+    );
+    
+    // زر طباعة التقرير
+    $('#print-report').click(function() {
+      window.print();
+    });
+  });
+</script>
+{% endblock %} 

@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<style>
+    .category-tree ul {
+        list-style: none;
+        padding-right: 1.5rem;
+    }
+    .category-tree li {
+        margin-bottom: 0.5rem;
+    }
+    .category-tree .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+    .category-tree .category-item:hover {
+        background-color: #f8f9fa;
+    }
+    .category-tree .toggle-icon {
+        margin-left: 0.5rem;
+        cursor: pointer;
+    }
+    .category-tree .category-actions {
+        opacity: 0.3;
+        transition: opacity 0.2s;
+    }
+    .category-tree .category-item:hover .category-actions {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة (مضمن مباشرة) -->
+    <div class="mb-4">
+        <!-- Breadcrumbs -->
+        {% if breadcrumb_items %}
+        <div class="mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    {% for item in breadcrumb_items %}
+                        {% if forloop.last or item.active %}
+                            <li class="breadcrumb-item active" aria-current="page">
+                                {% if item.icon %}<i class="{{ item.icon }} me-1"></i>{% endif %}
+                                {{ item.title }}
+                            </li>
+                        {% else %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ item.url }}">
+                                    {% if item.icon %}<i class="{{ item.icon }} me-1"></i>{% endif %}
+                                    {{ item.title }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </nav>
+        </div>
+        {% endif %}
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center">
+                {% if page_icon %}
+                    <div class="me-3">
+                        <i class="{{ page_icon }} fa-2x text-primary"></i>
+                    </div>
+                {% endif %}
+                <div>
+                    <h1 class="h3 mb-1">{{ page_title }}</h1>
+                    <p class="text-muted mb-0">إدارة فئات المنتجات وتنظيمها بشكل هرمي</p>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'product:category_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>{% trans "إضافة فئة" %}
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div style="background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "بحث وتصفية" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" id="search-form">
+                            <div class="mb-3">
+                                <label for="search" class="form-label">{% trans "البحث" %}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           placeholder="{% trans 'اسم الفئة...' %}" value="{{ request.GET.search }}">
+                                    <button class="btn btn-outline-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">{% trans "الحالة" %}</label>
+                                <div class="d-flex">
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="radio" name="status" id="status-all" 
+                                               value="" {% if not request.GET.status %}checked{% endif %}>
+                                        <label class="form-check-label" for="status-all">
+                                            {% trans "الكل" %}
+                                        </label>
+                                    </div>
+                                    <div class="form-check me-3">
+                                        <input class="form-check-input" type="radio" name="status" id="status-active" 
+                                               value="active" {% if request.GET.status == 'active' %}checked{% endif %}>
+                                        <label class="form-check-label" for="status-active">
+                                            {% trans "نشط" %}
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status" id="status-inactive" 
+                                               value="inactive" {% if request.GET.status == 'inactive' %}checked{% endif %}>
+                                        <label class="form-check-label" for="status-inactive">
+                                            {% trans "غير نشط" %}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    <i class="fas fa-filter me-2"></i>{% trans "تصفية" %}
+                                </button>
+                                <a href="{% url 'product:category_list' %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-redo me-2"></i>{% trans "إعادة تعيين" %}
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">{% trans "الإحصائيات" %}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <h4>{{ total_categories }}</h4>
+                                <span class="text-muted">{% trans "إجمالي الفئات" %}</span>
+                            </div>
+                            <div class="col-6">
+                                <h4>{{ active_categories }}</h4>
+                                <span class="text-muted">{% trans "فئات نشطة" %}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">{% trans "قائمة الفئات" %}</h5>
+                            <span class="badge bg-primary">{{ categories.count }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if categories %}
+                        <div class="category-tree">
+                            <ul class="root-categories">
+                                {% for category in root_categories %}
+                                <li>
+                                    <div class="category-item">
+                                        <div>
+                                            {% if category.children.exists %}
+                                            <span class="toggle-icon" data-id="{{ category.id }}">
+                                                <i class="fas fa-caret-down"></i>
+                                            </span>
+                                            {% else %}
+                                            <span class="ms-3"></span>
+                                            {% endif %}
+                                            
+                                            <a href="{% url 'product:category_detail' category.pk %}">
+                                                {{ category.name }}
+                                            </a>
+                                            
+                                            {% if not category.is_active %}
+                                            <span class="badge bg-danger ms-2">{% trans "غير نشط" %}</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="category-actions">
+                                            <a href="{% url 'product:category_edit' category.pk %}" class="btn btn-sm btn-outline-primary" title="{% trans 'تعديل' %}">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'product:category_delete' category.pk %}" class="btn btn-sm btn-outline-danger" title="{% trans 'حذف' %}">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if category.children.exists %}
+                                    <ul class="subcategories" id="children-{{ category.id }}">
+                                        {% for subcategory in category.children.all %}
+                                        <li>
+                                            <div class="category-item">
+                                                <div>
+                                                    <a href="{% url 'product:category_detail' subcategory.pk %}">
+                                                        {{ subcategory.name }}
+                                                    </a>
+                                                    
+                                                    {% if not subcategory.is_active %}
+                                                    <span class="badge bg-danger ms-2">{% trans "غير نشط" %}</span>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <div class="category-actions">
+                                                    <a href="{% url 'product:category_edit' subcategory.pk %}" class="btn btn-sm btn-outline-primary" title="{% trans 'تعديل' %}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="{% url 'product:category_delete' subcategory.pk %}" class="btn btn-sm btn-outline-danger" title="{% trans 'حذف' %}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        {% if categories and request.GET.search %}
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>{% trans "تم عرض الفئات المطابقة للبحث" %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if is_paginated %}
+                            {% include 'partials/pagination.html' %}
+                        {% endif %}
+                        
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                {% trans "لا توجد فئات متاحة. قم بإضافة فئة جديدة باستخدام زر الإضافة." %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // مكون لعرض وإخفاء الفئات الفرعية
+        const toggleIcons = document.querySelectorAll('.toggle-icon');
+        
+        toggleIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const categoryId = this.getAttribute('data-id');
+                const subcategoriesElement = document.getElementById(`children-${categoryId}`);
+                
+                if (subcategoriesElement.style.display === 'none') {
+                    subcategoriesElement.style.display = 'block';
+                    this.querySelector('i').classList.remove('fa-caret-right');
+                    this.querySelector('i').classList.add('fa-caret-down');
+                } else {
+                    subcategoriesElement.style.display = 'none';
+                    this.querySelector('i').classList.remove('fa-caret-down');
+                    this.querySelector('i').classList.add('fa-caret-right');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %} 

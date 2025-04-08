@@ -1,0 +1,341 @@
+[
+    {
+        "model": "sale.sale",
+        "pk": 1,
+        "fields": {
+            "number": "SALE0001",
+            "date": "2024-01-01",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "6000.00",
+            "discount": "0.00",
+            "tax": "840.00",
+            "total": "6840.00",
+            "payment_method": "cash",
+            "payment_status": "paid",
+            "notes": "فاتورة مبيعات تجريبية",
+            "created_by": 1,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 2,
+        "fields": {
+            "number": "SALE0002",
+            "date": "2024-01-08",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "12000.00",
+            "discount": "1000.00",
+            "tax": "1540.00",
+            "total": "12540.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مبيعات هواتف",
+            "created_by": 1,
+            "created_at": "2024-01-08T11:30:00Z",
+            "updated_at": "2024-01-08T11:30:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 3,
+        "fields": {
+            "number": "SALE0003",
+            "date": "2024-01-12",
+            "customer": 1,
+            "warehouse": 2,
+            "subtotal": "2000.00",
+            "discount": "0.00",
+            "tax": "280.00",
+            "total": "2280.00",
+            "payment_method": "cash",
+            "payment_status": "paid",
+            "notes": "فاتورة مبيعات أثاث",
+            "created_by": 1,
+            "created_at": "2024-01-12T14:45:00Z",
+            "updated_at": "2024-01-12T14:45:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 4,
+        "fields": {
+            "number": "SALE0004",
+            "date": "2024-01-18",
+            "customer": 1,
+            "warehouse": 1,
+            "subtotal": "3000.00",
+            "discount": "300.00",
+            "tax": "378.00",
+            "total": "3078.00",
+            "payment_method": "credit",
+            "payment_status": "unpaid",
+            "notes": "فاتورة مبيعات ملابس بالجملة",
+            "created_by": 1,
+            "created_at": "2024-01-18T09:15:00Z",
+            "updated_at": "2024-01-18T09:15:00Z"
+        }
+    },
+    {
+        "model": "sale.sale",
+        "pk": 5,
+        "fields": {
+            "number": "SALE0005",
+            "date": "2024-01-22",
+            "customer": 1,
+            "warehouse": 3,
+            "subtotal": "18000.00",
+            "discount": "2000.00",
+            "tax": "2240.00",
+            "total": "18240.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مبيعات أجهزة إلكترونية",
+            "created_by": 1,
+            "created_at": "2024-01-22T13:20:00Z",
+            "updated_at": "2024-01-22T13:20:00Z"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 1,
+        "fields": {
+            "sale": 1,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "6000.00",
+            "discount": "0.00",
+            "total": "6000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 2,
+        "fields": {
+            "sale": 2,
+            "product": 1,
+            "quantity": 2,
+            "unit_price": "6000.00",
+            "discount": "1000.00",
+            "total": "11000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 3,
+        "fields": {
+            "sale": 2,
+            "product": 2,
+            "quantity": 5,
+            "unit_price": "300.00",
+            "discount": "0.00",
+            "total": "1500.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 4,
+        "fields": {
+            "sale": 3,
+            "product": 5,
+            "quantity": 1,
+            "unit_price": "2000.00",
+            "discount": "0.00",
+            "total": "2000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 5,
+        "fields": {
+            "sale": 4,
+            "product": 2,
+            "quantity": 10,
+            "unit_price": "300.00",
+            "discount": "300.00",
+            "total": "2700.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 6,
+        "fields": {
+            "sale": 4,
+            "product": 7,
+            "quantity": 5,
+            "unit_price": "600.00",
+            "discount": "0.00",
+            "total": "3000.00"
+        }
+    },
+    {
+        "model": "sale.saleitem",
+        "pk": 7,
+        "fields": {
+            "sale": 5,
+            "product": 3,
+            "quantity": 1,
+            "unit_price": "18000.00",
+            "discount": "2000.00",
+            "total": "16000.00"
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 1,
+        "fields": {
+            "sale": 1,
+            "amount": "6840.00",
+            "payment_date": "2024-01-01",
+            "payment_method": "cash",
+            "reference_number": "PAY001",
+            "notes": "دفعة كاملة نقدية",
+            "created_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 2,
+        "fields": {
+            "sale": 2,
+            "amount": "5000.00",
+            "payment_date": "2024-01-08",
+            "payment_method": "cash",
+            "reference_number": "PAY002",
+            "notes": "دفعة أولى",
+            "created_at": "2024-01-08T11:30:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 3,
+        "fields": {
+            "sale": 3,
+            "amount": "2280.00",
+            "payment_date": "2024-01-12",
+            "payment_method": "cash",
+            "reference_number": "PAY003",
+            "notes": "دفعة كاملة نقدية",
+            "created_at": "2024-01-12T14:45:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salepayment",
+        "pk": 4,
+        "fields": {
+            "sale": 5,
+            "amount": "10000.00",
+            "payment_date": "2024-01-22",
+            "payment_method": "bank_transfer",
+            "reference_number": "TRF004",
+            "notes": "دفعة أولى",
+            "created_at": "2024-01-22T13:20:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salereturn",
+        "pk": 1,
+        "fields": {
+            "number": "SRET-XYZ123",
+            "date": "2024-01-05",
+            "sale": 1,
+            "warehouse": 1,
+            "subtotal": "1000.00",
+            "discount": "0.00",
+            "tax": "140.00",
+            "total": "1140.00",
+            "status": "confirmed",
+            "notes": "إرجاع منتج معيب",
+            "created_at": "2024-01-05T10:15:00Z",
+            "updated_at": "2024-01-05T10:15:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salereturn",
+        "pk": 2,
+        "fields": {
+            "number": "SRET-ABC456",
+            "date": "2024-01-15",
+            "sale": 2,
+            "warehouse": 1,
+            "subtotal": "1500.00",
+            "discount": "0.00",
+            "tax": "210.00",
+            "total": "1710.00",
+            "status": "confirmed",
+            "notes": "إرجاع منتج غير مطابق للمواصفات",
+            "created_at": "2024-01-15T15:30:00Z",
+            "updated_at": "2024-01-15T15:30:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salereturn",
+        "pk": 3,
+        "fields": {
+            "number": "SRET-DEF789",
+            "date": "2024-01-25",
+            "sale": 4,
+            "warehouse": 1,
+            "subtotal": "600.00",
+            "discount": "0.00",
+            "tax": "84.00",
+            "total": "684.00",
+            "status": "draft",
+            "notes": "إرجاع منتج غير مطابق للمقاس",
+            "created_at": "2024-01-25T16:45:00Z",
+            "updated_at": "2024-01-25T16:45:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "sale.salereturnitem",
+        "pk": 1,
+        "fields": {
+            "sale_return": 1,
+            "sale_item": 1,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "1000.00",
+            "discount": "0.00",
+            "total": "1000.00",
+            "reason": "منتج معيب"
+        }
+    },
+    {
+        "model": "sale.salereturnitem",
+        "pk": 2,
+        "fields": {
+            "sale_return": 2,
+            "sale_item": 3,
+            "product": 2,
+            "quantity": 5,
+            "unit_price": "300.00",
+            "discount": "0.00",
+            "total": "1500.00",
+            "reason": "مقاس غير مناسب"
+        }
+    },
+    {
+        "model": "sale.salereturnitem",
+        "pk": 3,
+        "fields": {
+            "sale_return": 3,
+            "sale_item": 5,
+            "product": 2,
+            "quantity": 2,
+            "unit_price": "300.00",
+            "discount": "0.00",
+            "total": "600.00",
+            "reason": "لون غير مطابق"
+        }
+    }
+]

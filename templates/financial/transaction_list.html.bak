@@ -1,0 +1,406 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/datatables/dataTables.bootstrap5.min.css' %}">
+<style>
+  /* تصميم عام */
+  .section-container {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    color: #344767;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  /* شارات ملونة */
+  .soft-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .soft-badge-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .soft-badge-success {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .soft-badge-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .soft-badge-info {
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+  }
+  
+  .soft-badge-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+  }
+  
+  /* تصميم حالة الفارغ */
+  .empty-state {
+    padding: 4rem 1rem;
+    text-align: center;
+  }
+  
+  .empty-state-icon {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  /* تنسيق الصفحات */
+  .pagination {
+    justify-content: center;
+  }
+  
+  .page-link {
+    border-radius: 5px;
+    margin: 0 3px;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  /* أزرار الإجراءات */
+  .action-button {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-right: 5px;
+    color: #6c757d;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: none;
+  }
+  
+  .action-button:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+  
+  .action-view:hover {
+    color: #0d6efd;
+  }
+  
+  .action-edit:hover {
+    color: #ffc107;
+  }
+  
+  .action-delete:hover {
+    color: #dc3545;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <!-- عنوان الصفحة - عدم المساس بالعنوان والبريدكرمب كما طلب المستخدم -->
+  <div class="row mb-4">
+    <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm">
+      <div class="d-flex align-items-center">
+        {% if page_icon %}
+          <div class="me-3">
+            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded">
+              <i class="{{ page_icon }} fa-2x"></i>
+            </div>
+          </div>
+        {% endif %}
+        <div>
+          <h1 class="h3 mb-1 fw-bold text-dark">{{ page_title }}</h1>
+          <p class="text-muted mb-0">عرض وإدارة المعاملات المالية للشركة</p>
+        </div>
+      </div>
+      <div>
+        <a href="{% url 'financial:transaction_create' %}" class="btn btn-primary">
+          <i class="fas fa-plus me-2"></i>{% trans "إضافة معاملة" %}
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- الإحصائيات -->
+  <div class="section-container">
+    <h5 class="section-title"><i class="fas fa-chart-bar me-2"></i>{% trans "الإحصائيات العامة" %}</h5>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card stat-card mb-4">
+          <div class="card-header bg-primary-header">
+            <h5 class="card-title mb-0">
+              <div class="d-flex align-items-center">
+                <div class="icon-box">
+                  <i class="fas fa-exchange-alt"></i>
+                </div>
+                <span>{% trans "إجمالي المعاملات" %}</span>
+              </div>
+            </h5>
+          </div>
+          <div class="card-body">
+            <h2 class="display-5 mb-1">{{ total_transactions|default:"0" }}</h2>
+            <p class="text-muted mb-0">{% trans "معاملة مالية" %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card stat-card mb-4">
+          <div class="card-header bg-success-header">
+            <h5 class="card-title mb-0">
+              <div class="d-flex align-items-center">
+                <div class="icon-box">
+                  <i class="fas fa-arrow-down"></i>
+                </div>
+                <span>{% trans "إجمالي الإيرادات" %}</span>
+              </div>
+            </h5>
+          </div>
+          <div class="card-body">
+            <h2 class="display-5 mb-1">{{ total_income|custom_number_format }}</h2>
+            <p class="text-muted mb-0">{% trans "جنيه مصري" %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card stat-card mb-4">
+          <div class="card-header bg-danger-header">
+            <h5 class="card-title mb-0">
+              <div class="d-flex align-items-center">
+                <div class="icon-box">
+                  <i class="fas fa-arrow-up"></i>
+                </div>
+                <span>{% trans "إجمالي المصروفات" %}</span>
+              </div>
+            </h5>
+          </div>
+          <div class="card-body">
+            <h2 class="display-5 mb-1">{{ total_expenses|custom_number_format }}</h2>
+            <p class="text-muted mb-0">{% trans "جنيه مصري" %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card stat-card mb-4">
+          <div class="card-header bg-info-header">
+            <h5 class="card-title mb-0">
+              <div class="d-flex align-items-center">
+                <div class="icon-box">
+                  <i class="fas fa-wallet"></i>
+                </div>
+                <span>{% trans "الرصيد الحالي" %}</span>
+              </div>
+            </h5>
+          </div>
+          <div class="card-body">
+            <h2 class="display-5 mb-1">{{ total_balance|custom_number_format }}</h2>
+            <p class="text-muted mb-0">{% trans "جنيه مصري" %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- تصفية وبحث -->
+  <div class="section-container">
+    <h5 class="section-title"><i class="fas fa-filter me-2"></i>{% trans "تصفية وبحث" %}</h5>
+    <div class="filter-section mb-4">
+      <form method="GET" action="" class="row g-3">
+        <div class="col-md-3">
+          <label for="account" class="form-label">{% trans "الحساب" %}</label>
+          <select class="form-select" id="account" name="account">
+            <option value="">{% trans "جميع الحسابات" %}</option>
+            {% for account in accounts %}
+            <option value="{{ account.id }}" {% if request.GET.account == account.id|stringformat:"i" %}selected{% endif %}>
+              {{ account.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="type" class="form-label">{% trans "نوع المعاملة" %}</label>
+          <select class="form-select" id="type" name="type">
+            <option value="">{% trans "الكل" %}</option>
+            <option value="income" {% if request.GET.type == 'income' %}selected{% endif %}>{% trans "إيراد" %}</option>
+            <option value="expense" {% if request.GET.type == 'expense' %}selected{% endif %}>{% trans "مصروف" %}</option>
+            <option value="transfer" {% if request.GET.type == 'transfer' %}selected{% endif %}>{% trans "تحويل" %}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="date_from" class="form-label">{% trans "من تاريخ" %}</label>
+          <input type="date" class="form-control" id="date_from" name="date_from" value="{{ request.GET.date_from }}">
+        </div>
+        <div class="col-md-2">
+          <label for="date_to" class="form-label">{% trans "إلى تاريخ" %}</label>
+          <input type="date" class="form-control" id="date_to" name="date_to" value="{{ request.GET.date_to }}">
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-search me-2"></i>{% trans "بحث" %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- قائمة المعاملات -->
+  <div class="section-container">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0"><i class="fas fa-list me-2"></i>{% trans "قائمة المعاملات" %}</h5>
+        <div class="actions-container">
+          <a href="{% url 'financial:transaction_create' %}" class="btn btn-sm btn-primary">
+            <i class="fas fa-plus me-1"></i>{% trans "إضافة معاملة" %}
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- استخدام قالب الجدول الموحد -->
+        {% with 
+          table_id="transactions-table"
+          headers=headers
+          data=transactions
+          empty_message="لا توجد معاملات مالية للعرض"
+          table_class="hover"
+          action_buttons=action_buttons
+          primary_key="id"
+          current_order_by=current_order_by
+          current_order_dir=current_order_dir
+        %}
+        {% include "components/data_table.html" %}
+        {% endwith %}
+        
+        <!-- ترقيم الصفحات -->
+        {% if transactions.has_other_pages %}
+        <div class="d-flex justify-content-center mt-4">
+          <nav aria-label="صفحات المعاملات">
+            <ul class="pagination">
+              {% if transactions.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="الأول">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ transactions.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="السابق">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="الأول">
+                  <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="السابق">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% endif %}
+              
+              {% for i in transactions.paginator.page_range %}
+                {% if transactions.number == i %}
+                  <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                {% elif i > transactions.number|add:'-3' and i < transactions.number|add:'3' %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a></li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if transactions.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ transactions.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="التالي">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ transactions.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" aria-label="الأخير">
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="التالي">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="الأخير">
+                  <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'js/global-table.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    // تهيئة جدول المعاملات
+    initGlobalTable('transactions-table', {
+      pageLength: 25,
+      order: [1, 'desc'],  // ترتيب حسب التاريخ تنازلياً
+      columnDefs: [
+        { targets: 'col-actions', orderable: false },
+        { targets: 'col-transaction_type', orderable: false }
+      ],
+      // تعطيل ترقيم الصفحات الداخلي واستخدام نظام Django
+      paging: false,
+      info: false
+    });
+    
+    // إضافة أزرار التصدير
+    addExportButtons('transactions-table', '.actions-container');
+    
+    // تنسيق حقول التاريخ
+    $('input[type="date"]').addClass('form-control');
+  });
+</script>
+{% endblock %} 

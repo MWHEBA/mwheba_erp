@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load custom_filters %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="page-title">{% trans "وحدات القياس" %}</h1>
+                <a href="{% url 'product:unit_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus ml-1"></i> {% trans "إضافة وحدة قياس" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">{% trans "قائمة وحدات القياس" %}</h5>
+                        <span class="badge bg-primary">{{ units.count }} {% trans "وحدة" %}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if units %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{% trans "الاسم" %}</th>
+                                    <th>{% trans "الرمز" %}</th>
+                                    <th>{% trans "الحالة" %}</th>
+                                    <th>{% trans "المنتجات" %}</th>
+                                    <th>{% trans "خيارات" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for unit in units %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ unit.name }}</td>
+                                    <td><code>{{ unit.symbol }}</code></td>
+                                    <td>
+                                        {% if unit.is_active %}
+                                        <span class="badge bg-success">{% trans "نشط" %}</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">{% trans "غير نشط" %}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ unit.products.count }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{% url 'product:unit_detail' unit.pk %}" class="btn btn-outline-info" title="{% trans 'عرض' %}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'product:unit_edit' unit.pk %}" class="btn btn-outline-primary" title="{% trans 'تعديل' %}">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'product:unit_delete' unit.pk %}" class="btn btn-outline-danger" title="{% trans 'حذف' %}">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle ml-1"></i>
+                        {% trans "لا توجد وحدات قياس حالياً. يمكنك إضافة وحدة قياس جديدة باستخدام الزر أعلاه." %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تفعيل تنسيق الجدول
+        if (document.querySelector('.table')) {
+            initDataTableArabic('.table', {
+                pageLength: 25,
+                responsive: true
+            });
+        }
+    });
+</script>
+{% endblock %} 

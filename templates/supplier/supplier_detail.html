@@ -1,0 +1,1139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load app_tags %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ supplier.name }} - {% trans "تفاصيل المورد" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components.css' %}">
+<link rel="stylesheet" href="{% static 'css/tables.css' %}">
+<style>
+  /* تصميم عام */
+  .section-container {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    color: #344767;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  /* بقية التنسيقات */
+  .supplier-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #5614B0;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .supplier-info-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+
+  .supplier-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .info-card-header {
+    background: linear-gradient(to left, #6a3093, #a044ff);
+    color: white;
+    padding: 1.2rem 1.5rem;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .info-card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('{% static "img/patterns/wave-pattern.svg" %}') right center no-repeat;
+    background-size: cover;
+    opacity: 0.1;
+  }
+
+  .finance-card-header {
+    background: linear-gradient(to left, #FF512F, #F09819);
+  }
+
+  .payments-card-header {
+    background: linear-gradient(to left, #2980B9, #2C3E50);
+  }
+
+  .info-list-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .info-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .info-list-item .icon-wrapper {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    font-size: 1rem;
+    background-color: rgba(106, 48, 147, 0.1);
+    color: #6a3093;
+  }
+
+  .info-list-item .icon-wrapper.phone {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+
+  .info-list-item .icon-wrapper.email {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+
+  .info-list-item .icon-wrapper.address {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  .info-list-item .icon-wrapper.person {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+  }
+
+  .info-list-item .icon-wrapper.tax {
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+  }
+
+  .info-list-item .info-content {
+    flex: 1;
+  }
+
+  .info-list-item .info-content .info-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+  }
+
+  .info-list-item .info-content .info-value {
+    font-weight: 600;
+    color: #344767;
+  }
+
+  .balance-indicator {
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .balance-indicator.positive {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  .balance-indicator.negative {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+
+  .actions-floating-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 99;
+  }
+
+  .floating-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .floating-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .back-btn {
+    transition: all 0.3s ease;
+  }
+
+  .back-btn:hover {
+    transform: translateX(5px);
+  }
+
+  .notes-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    border-right: 4px solid #6a3093;
+  }
+
+  .notes-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #344767;
+    margin-bottom: 0.75rem;
+  }
+
+  .notes-content {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* تصميم كروت الإحصائيات */
+  .stats-card {
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .supplier-header {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .supplier-info-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    color: #344767;
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .transaction-amount {
+    direction: rtl !important;
+  }
+  
+  /* تنسيقات التابات */
+  .supplier-tabs {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .nav-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+  }
+  
+  .nav-tabs .nav-item {
+    margin-bottom: -1px;
+  }
+  
+  .nav-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    margin-right: 0.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    background-color: transparent;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #6a3093;
+    border-bottom-color: #6a3093;
+    background-color: transparent;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    color: #6a3093;
+    border-bottom-color: rgba(106, 48, 147, 0.4);
+  }
+  
+  .nav-tabs .nav-link .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(25%, -25%);
+    font-size: 0.7rem;
+  }
+  
+  .tab-content {
+    padding-top: 1rem;
+  }
+  
+  .tab-pane {
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <!-- عنوان الصفحة -->
+    <div class="mb-4">
+        <!-- Breadcrumbs -->
+        <div class="mb-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'core:dashboard' %}">
+                            <i class="fas fa-home me-1"></i>{% trans "الرئيسية" %}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'supplier:supplier_list' %}">
+                            <i class="fas fa-truck me-1"></i>{% trans "الموردين" %}
+                        </a>
+                    </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ supplier.name }}
+          </li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- Header -->
+    <div class="supplier-header">
+      <div class="row align-items-center">
+        <div class="col-md-7">
+          <div class="d-flex align-items-center mb-3">
+                <div class="me-3">
+              <i class="fas fa-user-tie fa-3x text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="h3 mb-1">{{ supplier.name }}</h1>
+              <div class="d-flex flex-wrap mt-2">
+                <div class="supplier-info-badge me-2 mb-2">
+                  <i class="fas fa-hashtag me-2 text-primary"></i>
+                  <span>{{ supplier.code }}</span>
+                </div>
+                
+                    {% if supplier.balance > 0 %}
+                  <div class="supplier-info-badge me-2 mb-2" style="background-color: rgba(220, 53, 69, 0.1); color: #dc3545; font-weight: 700;">
+                    <i class="fas fa-arrow-up me-2"></i>
+                    <span>{% trans "الاستحقاق:" %} {{ supplier.balance|custom_number_format }} {% trans "ج.م" %}</span>
+                  </div>
+                    {% else %}
+                  <div class="supplier-info-badge me-2 mb-2" style="background-color: rgba(25, 135, 84, 0.1); color: #198754; font-weight: 700;">
+                    <i class="fas fa-arrow-down me-2"></i>
+                    <span>{% trans "الاستحقاق:" %} {{ supplier.balance|custom_number_format }} {% trans "ج.م" %}</span>
+                  </div>
+                    {% endif %}
+                
+                {% if supplier.tax_number %}
+                <div class="supplier-info-badge mb-2">
+                  <i class="fas fa-receipt me-2 text-info"></i>
+                  <span>{{ supplier.tax_number }}</span>
+                </div>
+                {% endif %}
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="d-flex flex-wrap justify-content-md-end">
+            <a href="{% url 'supplier:supplier_payment_add_for_supplier' supplier.pk %}" class="btn btn-primary me-2 mb-2" style="font-weight: 700;">
+                    <i class="fas fa-money-bill me-1"></i> {% trans "إضافة دفعة" %}
+                </a>
+            <a href="{% url 'purchase:purchase_create' %}?supplier={{ supplier.pk }}" class="btn btn-success me-2 mb-2" style="font-weight: 700;">
+              <i class="fas fa-shopping-cart me-1"></i> {% trans "فاتورة شراء" %}
+            </a>
+            <a href="{% url 'supplier:supplier_edit' supplier.pk %}" class="btn btn-warning me-2 mb-2" style="font-weight: 700;">
+                    <i class="fas fa-edit me-1"></i> {% trans "تعديل" %}
+                </a>
+            <a href="#" class="btn btn-outline-secondary mb-2" data-bs-toggle="modal" data-bs-target="#actionsModal" style="font-weight: 600;">
+              <i class="fas fa-ellipsis-v"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview Cards -->
+  <div class="section-container">
+    <h5 class="section-title"><i class="fas fa-chart-bar me-2"></i>{% trans "نظرة عامة" %}</h5>
+    <div class="row">
+      <div class="col-md-4 col-lg-3">
+        <div class="stats-card stats-card-primary">
+          <div class="stats-card-header"></div>
+          <div class="stats-card-body">
+            <div class="stats-card-icon">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stats-card-title">{% trans "إجمالي المدفوعات" %}</div>
+            <div class="stats-card-value">{{ total_payments|custom_number_format }}</div>
+            <div class="stats-card-unit">{% trans "ج.م" %}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="stats-card stats-card-success">
+          <div class="stats-card-header"></div>
+          <div class="stats-card-body">
+            <div class="stats-card-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stats-card-title">{% trans "إجمالي المشتريات" %}</div>
+            <div class="stats-card-value">{{ total_purchases|default:"0"|custom_number_format }}</div>
+            <div class="stats-card-unit">{% trans "ج.م" %}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="stats-card stats-card-danger">
+          <div class="stats-card-header"></div>
+          <div class="stats-card-body">
+            <div class="stats-card-icon">
+              <i class="fas fa-box"></i>
+            </div>
+            <div class="stats-card-title">{% trans "إجمالي المنتجات" %}</div>
+            <div class="stats-card-value">{{ products_count|default:"0" }}</div>
+            <div class="stats-card-unit" style="font-weight: 600;">{% trans "منتج" %}</div>
+            </div>
+        </div>
+    </div>
+
+      <div class="col-md-4 col-lg-3">
+        <div class="stats-card stats-card-info">
+          <div class="stats-card-header"></div>
+          <div class="stats-card-body">
+            <div class="stats-card-icon">
+              <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="stats-card-title">{% trans "إجمالي الفواتير" %}</div>
+            <div class="stats-card-value">{{ purchases_count|default:"0" }}</div>
+            <div class="stats-card-unit" style="font-weight: 600;">{% trans "فاتورة" %}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+                    </div>
+
+  <!-- نظام التابات -->
+  <div class="supplier-tabs">
+    <ul class="nav nav-tabs" id="supplierTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="info-tab-pane" aria-selected="true">
+          <i class="fas fa-info-circle me-2"></i>{% trans "معلومات المورد" %}
+        </button>
+                            </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchases-tab-pane" type="button" role="tab" aria-controls="purchases-tab-pane" aria-selected="false">
+          <i class="fas fa-shopping-cart me-2"></i>{% trans "فواتير الشراء" %}
+          <span class="badge bg-info rounded-pill">{{ purchases_count|default:"0" }}</span>
+        </button>
+                            </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments-tab-pane" type="button" role="tab" aria-controls="payments-tab-pane" aria-selected="false">
+          <i class="fas fa-money-bill-wave me-2"></i>{% trans "المدفوعات" %}
+          <span class="badge bg-primary rounded-pill">{{ payments|length|default:"0" }}</span>
+        </button>
+                            </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="statement-tab" data-bs-toggle="tab" data-bs-target="#statement-tab-pane" type="button" role="tab" aria-controls="statement-tab-pane" aria-selected="false">
+          <i class="fas fa-file-alt me-2"></i>{% trans "كشف الحساب" %}
+        </button>
+                            </li>
+                        </ul>
+                        
+    <div class="tab-content" id="supplierTabsContent">
+      <!-- تاب معلومات المورد -->
+      <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">
+        <div class="section-container">
+          <div class="p-0">
+            <div class="info-list-item">
+              <div class="icon-wrapper phone">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">{% trans "رقم الهاتف" %}</div>
+                <div class="info-value">{{ supplier.phone|format_phone }}</div>
+              </div>
+            </div>
+            
+            <div class="info-list-item">
+              <div class="icon-wrapper email">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">{% trans "البريد الإلكتروني" %}</div>
+                <div class="info-value">{{ supplier.email|default:"لا يوجد" }}</div>
+              </div>
+            </div>
+            
+            <div class="info-list-item">
+              <div class="icon-wrapper address">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">{% trans "العنوان" %}</div>
+                <div class="info-value">{{ supplier.address|default:"لا يوجد" }}</div>
+                        </div>
+                    </div>
+            
+            <div class="info-list-item">
+              <div class="icon-wrapper person">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">{% trans "جهة الاتصال" %}</div>
+                <div class="info-value">{{ supplier.contact_person|default:"لا يوجد" }}</div>
+                        </div>
+                    </div>
+            
+            <div class="info-list-item">
+              <div class="icon-wrapper tax">
+                <i class="fas fa-file-invoice"></i>
+              </div>
+              <div class="info-content">
+                <div class="info-label">{% trans "الرقم الضريبي" %}</div>
+                <div class="info-value">{{ supplier.tax_number|default:"لا يوجد" }}</div>
+                </div>
+            </div>
+            
+            {% if supplier.notes %}
+            <div class="notes-section">
+              <div class="notes-title">
+                <i class="fas fa-sticky-note me-2"></i> {% trans "ملاحظات" %}
+              </div>
+              <div class="notes-content">
+                {{ supplier.notes }}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      
+      <!-- تاب فواتير الشراء -->
+      <div class="tab-pane fade" id="purchases-tab-pane" role="tabpanel" aria-labelledby="purchases-tab" tabindex="0">
+        <div class="section-container">
+          <div class="d-flex justify-content-end mb-3">
+            <a href="{% url 'purchase:purchase_create' %}?supplier={{ supplier.pk }}" class="btn btn-primary">
+              <i class="fas fa-plus me-1"></i>{% trans "إضافة فاتورة جديدة" %}
+            </a>
+          </div>
+          
+          {% if purchases %}
+          <div class="table-responsive">
+            <table id="supplier-purchases-table" class="transaction-table invoices-table table-hover table-striped" style="width: 100%">
+              <thead>
+                <tr>
+                  <th class="text-center col-id">#</th>
+                  <th class="text-center col-date">{% trans "التاريخ" %}</th>
+                  <th class="text-center col-reference">{% trans "رقم الفاتورة" %}</th>
+                  <th class="text-center col-amount">{% trans "المبلغ" %}</th>
+                  <th class="text-center col-amount_paid">{% trans "المدفوع" %}</th>
+                  <th class="text-center col-amount_due">{% trans "المتبقي" %}</th>
+                  <th class="text-center col-payment_status">{% trans "الحالة" %}</th>
+                  <th class="text-center col-actions">{% trans "إجراءات" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for purchase in purchases %}
+                  <tr>
+                    <td class="text-center col-id">{{ forloop.counter }}</td>
+                    <td class="text-center col-date">
+                      <span class="transaction-date">{{ purchase.date|date:"Y-m-d" }}</span>
+                    </td>
+                    <td class="text-center col-reference">
+                      <div class="transaction-ref text-center">
+                        <a href="{% url 'purchase:purchase_detail' purchase.pk %}" class="text-decoration-none">
+                          <span class="badge invoice-number"><i class="fas fa-file-invoice me-1"></i> {{ purchase.number }}</span>
+                        </a>
+                      </div>
+                    </td>
+                    <td class="text-center col-amount">
+                      <span class="transaction-amount">
+                        {% if purchase.total > 0 %}
+                          <strong>{{ purchase.total|custom_number_format }}</strong> {% trans "ج.م" %}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                      </span>
+                    </td>
+                    <td class="text-center col-amount_paid">
+                      <span class="transaction-amount">
+                        {% if purchase.amount_paid > 0 %}
+                          <strong>{{ purchase.amount_paid|custom_number_format }}</strong> {% trans "ج.م" %}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                      </span>
+                    </td>
+                    <td class="text-center col-amount_due">
+                      <span class="transaction-amount {% if purchase.amount_due > 0 %}negative{% else %}positive{% endif %}">
+                        {% if purchase.amount_due > 0 %}
+                          <strong>{{ purchase.amount_due|custom_number_format }}</strong> {% trans "ج.م" %}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                      </span>
+                    </td>
+                    <td class="text-center col-payment_status">
+                      <div class="expense-status-cell">
+                        {% if purchase.payment_status == 'paid' %}
+                          <span class="badge bg-success">{% trans "مدفوعة" %}</span>
+                        {% elif purchase.payment_status == 'partially_paid' %}
+                          <span class="badge bg-warning">{% trans "مدفوعة جزئيا" %}</span>
+                        {% else %}
+                          <span class="badge bg-danger">{% trans "غير مدفوعة" %}</span>
+                        {% endif %}
+                      </div>
+                    </td>
+                    <td class="text-center col-actions">
+                      <div class="d-flex justify-content-center">
+                        <a href="{% url 'purchase:purchase_detail' purchase.pk %}" class="action-button action-view" title="{% trans 'عرض الفاتورة' %}">
+                          <i class="fas fa-eye"></i>
+                        </a>
+                        {% if not purchase.is_fully_paid %}
+                        <a href="{% url 'purchase:purchase_add_payment' purchase.pk %}" class="action-button action-paid" title="{% trans 'إضافة دفعة' %}">
+                          <i class="fas fa-money-bill"></i>
+                        </a>
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- إضافة زر تصدير البيانات -->
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-export-table me-2" data-table="supplier-purchases-table" data-filename="supplier_purchases.csv">
+              <i class="fas fa-file-csv me-1"></i>{% trans "تصدير CSV" %}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success btn-export-excel" data-table="supplier-purchases-table" data-filename="supplier_purchases.xlsx">
+              <i class="fas fa-file-excel me-1"></i>{% trans "تصدير Excel" %}
+            </button>
+          </div>
+          {% else %}
+          <div class="alert alert-info d-flex align-items-center m-3">
+            <i class="fas fa-info-circle fa-2x me-3"></i>
+            <div>
+              {% trans "لا توجد فواتير مشتريات مسجلة لهذا المورد." %}
+              <a href="{% url 'purchase:purchase_create' %}?supplier={{ supplier.pk }}" class="alert-link">
+                {% trans "إضافة فاتورة جديدة" %}
+              </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- تاب المدفوعات -->
+      <div class="tab-pane fade" id="payments-tab-pane" role="tabpanel" aria-labelledby="payments-tab" tabindex="0">
+        <div class="section-container">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="badge bg-primary rounded-pill px-3 py-2 d-flex align-items-center">
+              <i class="fas fa-money-bill-wave me-2"></i>
+              <span>{% trans "الإجمالي:" %} {{ total_payments|custom_number_format }} {% trans "ج.م" %}</span>
+            </div>
+            <a href="{% url 'supplier:supplier_payment_add_for_supplier' supplier.pk %}" class="btn btn-primary">
+              <i class="fas fa-plus me-1"></i>{% trans "إضافة دفعة جديدة" %}
+            </a>
+                    </div>
+          
+                        {% if payments %}
+                            <div class="table-responsive">
+            <table id="supplier-payments-table" class="payment-table transaction-table table-hover table-striped" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                  <th class="text-center col-id">#</th>
+                  <th class="text-center col-date">{% trans "التاريخ" %}</th>
+                  <th class="text-center col-amount">{% trans "المبلغ" %}</th>
+                  <th class="text-center col-payment_method">{% trans "طريقة الدفع" %}</th>
+                  <th class="text-center col-reference">{% trans "المرجع" %}</th>
+                  <th class="text-center col-notes">{% trans "ملاحظات" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for payment in payments %}
+                                            <tr>
+                    <td class="text-center col-id">{{ forloop.counter }}</td>
+                    <td class="text-center col-date">
+                      <span class="transaction-date">{{ payment.payment_date }}</span>
+                    </td>
+                    <td class="text-center col-amount">
+                      <span class="transaction-amount positive">
+                        <strong>{{ payment.amount|custom_number_format }}</strong> {% trans "ج.م" %}
+                      </span>
+                    </td>
+                    <td class="text-center col-payment_method">
+                      {% if payment.payment_method == 'cash' %}
+                        <span class="badge payment-method cash">
+                          <i class="fas fa-money-bill-wave me-1"></i> {% trans "نقدي" %}
+                        </span>
+                      {% elif payment.payment_method == 'bank_transfer' %}
+                        <span class="badge payment-method bank-transfer">
+                          <i class="fas fa-university me-1"></i> {% trans "تحويل بنكي" %}
+                        </span>
+                      {% else %}
+                        <span class="badge payment-method">
+                          <i class="fas fa-credit-card me-1"></i> {{ payment.get_payment_method_display }}
+                        </span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center col-reference">
+                      <div class="transaction-ref text-center">
+                        {{ payment.reference_number|default:"-" }}
+                      </div>
+                    </td>
+                    <td class="text-center col-notes">
+                      <div class="description">{{ payment.notes|truncatechars:30|default:"-" }}</div>
+                    </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+          
+          <!-- إضافة زر تصدير البيانات -->
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-export-table me-2" data-table="supplier-payments-table" data-filename="supplier_payments.csv">
+              <i class="fas fa-file-csv me-1"></i>{% trans "تصدير CSV" %}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success btn-export-excel" data-table="supplier-payments-table" data-filename="supplier_payments.xlsx">
+              <i class="fas fa-file-excel me-1"></i>{% trans "تصدير Excel" %}
+            </button>
+          </div>
+          {% else %}
+          <div class="alert alert-info d-flex align-items-center m-3">
+            <i class="fas fa-info-circle fa-2x me-3"></i>
+            <div>
+              {% trans "لا توجد مدفوعات مسجلة لهذا المورد." %}
+              <a href="{% url 'supplier:supplier_payment_add_for_supplier' supplier.pk %}" class="alert-link">
+                {% trans "إضافة دفعة جديدة" %}
+              </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- تاب كشف الحساب -->
+      <div class="tab-pane fade" id="statement-tab-pane" role="tabpanel" aria-labelledby="statement-tab" tabindex="0">
+        <div class="section-container">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="fas fa-file-alt me-2"></i>{% trans "كشف حساب المورد" %}</h5>
+            <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+              <i class="fas fa-print me-1"></i>{% trans "طباعة" %}
+            </button>
+          </div>
+          
+          <div class="alert alert-info mb-3">
+            <i class="fas fa-info-circle me-2"></i> {% trans "يعرض كشف الحساب جميع المعاملات المالية مع المورد، بما في ذلك الفواتير والمدفوعات والحركات الأخرى مرتبة زمنياً." %}
+          </div>
+          
+          {% if transactions %}
+          <div class="table-responsive">
+            <table id="supplier-statement-table" class="transaction-table statement-table table-hover table-striped" style="width: 100%">
+              <thead>
+                <tr>
+                  <th class="text-center col-date">{% trans "التاريخ" %}</th>
+                  <th class="text-center col-reference">{% trans "المرجع" %}</th>
+                  <th class="text-center col-type">{% trans "نوع الحركة" %}</th>
+                  <th class="text-center col-description">{% trans "الوصف" %}</th>
+                  <th class="text-center col-debit">{% trans "مدين" %}</th>
+                  <th class="text-center col-credit">{% trans "دائن" %}</th>
+                  <th class="text-center col-balance">{% trans "الرصيد" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for transaction in transactions %}
+                  <tr>
+                    <td class="text-center col-date">
+                      <span class="transaction-date">{{ transaction.date|date:"Y-m-d" }}</span>
+                    </td>
+                    <td class="text-center col-reference">
+                      <div class="transaction-ref text-center">
+                        {% if transaction.reference %}
+                          {{ transaction.reference }}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                    </div>
+                    </td>
+                    <td class="text-center col-type">
+                      {% if transaction.type == 'purchase' %}
+                        <span class="badge bg-info">{% trans "فاتورة" %}</span>
+                      {% elif transaction.type == 'payment' %}
+                        <span class="badge bg-success">{% trans "دفعة" %}</span>
+                      {% else %}
+                        <span class="badge bg-secondary">{{ transaction.type }}</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-center col-description">
+                      <div class="description">{{ transaction.description }}</div>
+                    </td>
+                    <td class="text-center col-debit">
+                      <span class="transaction-amount {% if transaction.debit > 0 %}negative{% endif %}">
+                        {% if transaction.debit > 0 %}
+                          <strong>{{ transaction.debit|custom_number_format }}</strong> {% trans "ج.م" %}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                      </span>
+                    </td>
+                    <td class="text-center col-credit">
+                      <span class="transaction-amount {% if transaction.credit > 0 %}positive{% endif %}">
+                        {% if transaction.credit > 0 %}
+                          <strong>{{ transaction.credit|custom_number_format }}</strong> {% trans "ج.م" %}
+                        {% else %}
+                          <span class="text-muted">-</span>
+                        {% endif %}
+                      </span>
+                    </td>
+                    <td class="text-center col-balance">
+                      <span class="transaction-amount {% if transaction.balance > 0 %}negative{% else %}positive{% endif %}">
+                        <strong>{{ transaction.balance|custom_number_format }}</strong> {% trans "ج.م" %}
+                      </span>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- إضافة زر تصدير البيانات -->
+          <div class="d-flex justify-content-end mt-3">
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-export-table me-2" data-table="supplier-statement-table" data-filename="supplier_statement.csv">
+              <i class="fas fa-file-csv me-1"></i>{% trans "تصدير CSV" %}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success btn-export-excel" data-table="supplier-statement-table" data-filename="supplier_statement.xlsx">
+              <i class="fas fa-file-excel me-1"></i>{% trans "تصدير Excel" %}
+            </button>
+          </div>
+          {% else %}
+          <div class="alert alert-info d-flex align-items-center m-3">
+            <i class="fas fa-info-circle fa-2x me-3"></i>
+            <div>
+              {% trans "لا توجد معاملات مالية مسجلة لهذا المورد." %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Back Button -->
+  <div class="mt-4 mb-5">
+    <a href="{% url 'supplier:supplier_list' %}" class="btn btn-outline-secondary back-btn">
+      <i class="fas fa-arrow-right ms-1"></i> {% trans "العودة لقائمة الموردين" %}
+    </a>
+  </div>
+</div>
+
+<!-- Actions Modal -->
+<div class="modal fade" id="actionsModal" tabindex="-1" aria-labelledby="actionsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actionsModalLabel">
+          <i class="fas fa-cog me-2"></i> {% trans "خيارات إضافية" %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <a href="{% url 'supplier:supplier_edit' supplier.pk %}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <div class="icon-wrapper me-3" style="background-color: rgba(255, 193, 7, 0.1); color: #ffc107;">
+              <i class="fas fa-edit"></i>
+            </div>
+            <div>
+              <div class="fw-bold" style="font-weight: 700;">{% trans "تعديل بيانات المورد" %}</div>
+              <small class="text-muted">{% trans "تعديل معلومات الاتصال والبيانات الأساسية" %}</small>
+            </div>
+          </a>
+          <a href="{% url 'supplier:supplier_payment_add_for_supplier' supplier.pk %}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <div class="icon-wrapper me-3" style="background-color: rgba(25, 135, 84, 0.1); color: #198754;">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div>
+              <div class="fw-bold" style="font-weight: 700;">{% trans "إضافة دفعة" %}</div>
+              <small class="text-muted">{% trans "تسجيل دفعة جديدة للمورد" %}</small>
+            </div>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action d-flex align-items-center" onclick="$('#supplierTabs a[href=\'#statement-tab-pane\']').tab('show');" data-bs-dismiss="modal">
+            <div class="icon-wrapper me-3" style="background-color: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+              <i class="fas fa-print"></i>
+            </div>
+            <div>
+              <div class="fw-bold" style="font-weight: 700;">{% trans "كشف حساب" %}</div>
+              <small class="text-muted">{% trans "عرض وطباعة تقرير بحساب المورد والمدفوعات" %}</small>
+            </div>
+          </a>
+          <a href="{% url 'purchase:purchase_create' %}?supplier={{ supplier.pk }}" class="list-group-item list-group-item-action d-flex align-items-center">
+            <div class="icon-wrapper me-3" style="background-color: rgba(220, 53, 69, 0.1); color: #dc3545;">
+              <i class="fas fa-shopping-cart"></i>
+                </div>
+            <div>
+              <div class="fw-bold" style="font-weight: 700;">{% trans "إضافة فاتورة مشتريات" %}</div>
+              <small class="text-muted">{% trans "إنشاء فاتورة مشتريات جديدة من هذا المورد" %}</small>
+            </div>
+          </a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating action button -->
+<div class="actions-floating-btn">
+  <a href="#" class="floating-btn bg-primary" data-bs-toggle="modal" data-bs-target="#actionsModal">
+    <i class="fas fa-plus"></i>
+  </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="{% static 'js/global-table.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    // تهيئة الجداول والتابات
+    $('#supplierTabs button').on('click', function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+    
+    // الحفاظ على التاب النشط بعد تحديث الصفحة
+    let activeTab = localStorage.getItem('supplierActiveTab');
+    if (activeTab) {
+      $('#supplierTabs button[data-bs-target="' + activeTab + '"]').tab('show');
+    }
+    
+    // حفظ التاب النشط عند التغيير
+    $('#supplierTabs button').on('shown.bs.tab', function (e) {
+      localStorage.setItem('supplierActiveTab', $(e.target).data('bs-target'));
+      
+      // تهيئة الجداول عند تبديل التاب
+      if ($(e.target).attr('id') === 'purchases-tab') {
+        initPurchasesTable();
+      } else if ($(e.target).attr('id') === 'payments-tab') {
+        initPaymentsTable();
+      } else if ($(e.target).attr('id') === 'statement-tab') {
+        initStatementTable();
+      }
+    });
+    
+    // تهيئة الجداول
+    function initPurchasesTable() {
+      if ($.fn.DataTable.isDataTable('#supplier-purchases-table')) {
+        return;
+      }
+      
+      $('#supplier-purchases-table').DataTable({
+        "paging": true,
+        "pageLength": 10,
+        "searching": true,
+        "ordering": true,
+        "responsive": true,
+        "language": {
+          url: "{% static 'js/dataTables.arabic.json' %}"
+        },
+        "columnDefs": [
+          { "orderable": false, "targets": 7, "width": "100px" },  // عمود الإجراءات
+          { "className": "text-center", "targets": "_all" }
+        ],
+        "order": [[1, 'desc']]  // ترتيب حسب التاريخ تنازلياً
+      });
+    }
+    
+    function initPaymentsTable() {
+      if ($.fn.DataTable.isDataTable('#supplier-payments-table')) {
+        return;
+      }
+      
+      $('#supplier-payments-table').DataTable({
+        "paging": true,
+        "pageLength": 10,
+        "searching": true,
+        "ordering": true,
+        "responsive": true,
+        "language": {
+          url: "{% static 'js/dataTables.arabic.json' %}"
+        },
+        "columnDefs": [
+          { "className": "text-center", "targets": "_all" }
+        ],
+        "order": [[1, 'desc']]  // ترتيب حسب التاريخ تنازلياً
+      });
+    }
+    
+    function initStatementTable() {
+      if ($.fn.DataTable.isDataTable('#supplier-statement-table')) {
+        return;
+      }
+      
+      $('#supplier-statement-table').DataTable({
+        "paging": true,
+        "pageLength": 10,
+        "searching": true,
+        "ordering": true,
+        "responsive": true,
+        "language": {
+          url: "{% static 'js/dataTables.arabic.json' %}"
+        },
+        "columnDefs": [
+          { "className": "text-center", "targets": "_all" }
+        ],
+        "order": [[0, 'desc']]  // ترتيب حسب التاريخ تنازلياً
+      });
+    }
+    
+    // تنفيذ عملية التصدير CSV
+    $('.btn-export-table').on('click', function() {
+      const tableId = $(this).data('table');
+      const filename = $(this).data('filename');
+      exportTableToCSV($('#' + tableId), filename);
+    });
+    
+    // تنفيذ عملية التصدير Excel
+    $('.btn-export-excel').on('click', function() {
+      const tableId = $(this).data('table');
+      const filename = $(this).data('filename');
+      exportTableToExcel($('#' + tableId), filename);
+    });
+    
+    // تهيئة الجداول في التاب النشط عند تحميل الصفحة
+    if ($('#purchases-tab-pane').hasClass('active')) {
+      initPurchasesTable();
+    } else if ($('#payments-tab-pane').hasClass('active')) {
+      initPaymentsTable();
+    } else if ($('#statement-tab-pane').hasClass('active')) {
+      initStatementTable();
+    }
+    
+    // تهيئة الجدول عند التنقل باستخدام الروابط
+    $('a[href="#purchases-tab-pane"]').on('click', function() {
+      $('#supplierTabs button[data-bs-target="#purchases-tab-pane"]').tab('show');
+    });
+    
+    $('a[href="#payments-tab-pane"]').on('click', function() {
+      $('#supplierTabs button[data-bs-target="#payments-tab-pane"]').tab('show');
+    });
+    
+    $('a[href="#statement-tab-pane"]').on('click', function() {
+      $('#supplierTabs button[data-bs-target="#statement-tab-pane"]').tab('show');
+    });
+    
+    // وظائف التصدير
+    function exportTableToCSV($table, filename) {
+      const $rows = $table.find('tr:has(td,th)');
+      let tmpColDelim = String.fromCharCode(11);
+      let tmpRowDelim = String.fromCharCode(0);
+      let colDelim = '","';
+      let rowDelim = '"\r\n"';
+      
+      let csv = '"';
+      csv += $rows.map(function(i, row) {
+        let $row = $(row);
+        let $cols = $row.find('td,th');
+        
+        return $cols.map(function(j, col) {
+          let $col = $(col);
+          let text = $col.text().trim();
+          
+          return text.replace(/"/g, '""');
+        }).get().join(tmpColDelim);
+      }).get().join(tmpRowDelim)
+        .split(tmpRowDelim).join(rowDelim)
+        .split(tmpColDelim).join(colDelim) + '"';
+      
+      // للتعامل مع الإعدادات العربية
+      csv = "\uFEFF" + csv;
+      
+      // تنزيل الملف
+      const link = document.createElement("a");
+      link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
+    function exportTableToExcel($table, filename) {
+      const tableHtml = $table.clone();
+      
+      // تنسيق الجدول للتصدير
+      tableHtml.find('th, td').each(function () {
+        $(this).attr('style', 'text-align:center; border: 1px solid #ddd;');
+      });
+      
+      // إنشاء جدول Excel
+      let html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+      html += '<head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+      html += '<body><table dir="rtl">' + tableHtml.html() + '</table></body></html>';
+      
+      // للتعامل مع الإعدادات العربية
+      const blob = new Blob(["\uFEFF" + html], { type: 'application/vnd.ms-excel' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    });
+</script>
+{% endblock %} 

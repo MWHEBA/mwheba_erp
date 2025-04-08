@@ -1,0 +1,198 @@
+[
+    {
+        "model": "users.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "مدير",
+            "last_name": "النظام",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "admin@example.com",
+            "phone": "0100000000",
+            "user_type": "admin",
+            "status": "active",
+            "address": "القاهرة، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": false,
+            "username": "accountant",
+            "first_name": "محمد",
+            "last_name": "أحمد",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "accountant@example.com",
+            "phone": "0111111111",
+            "user_type": "accountant",
+            "status": "active",
+            "address": "الجيزة، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": false,
+            "username": "inventory",
+            "first_name": "أحمد",
+            "last_name": "محمود",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "inventory@example.com",
+            "phone": "0122222222",
+            "user_type": "inventory_manager",
+            "status": "active",
+            "address": "المعادي، القاهرة، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": false,
+            "username": "sales1",
+            "first_name": "فاطمة",
+            "last_name": "محمد",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "sales1@example.com",
+            "phone": "0133333333",
+            "user_type": "sales_rep",
+            "status": "active",
+            "address": "مدينة نصر، القاهرة، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": false,
+            "username": "sales2",
+            "first_name": "سمير",
+            "last_name": "عبدالله",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "sales2@example.com",
+            "phone": "0144444444",
+            "user_type": "sales_rep",
+            "status": "active",
+            "address": "المهندسين، الجيزة، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 6,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$5dO30c9mtVOgfJJUFcQnVv$vT0g9ExDQZ0qFRwpGJcbbvj9CeMY1jXWFQYstqqgcec=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "inactive_user",
+            "first_name": "وليد",
+            "last_name": "سعيد",
+            "is_staff": false,
+            "is_active": false,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "inactive@example.com",
+            "phone": "0155555555",
+            "user_type": "sales_rep",
+            "status": "inactive",
+            "address": "الإسكندرية، مصر"
+        }
+    },
+    {
+        "model": "users.user",
+        "pk": 7,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$evIWBFQMC1jQqEbBL6YgNZ$ZE4qkvjUi7TmYdjUVF1AJCSedudsYoF891HaFeVjQ3g=",
+            "last_login": "2024-01-01T00:00:00Z",
+            "is_superuser": true,
+            "username": "mwheba",
+            "first_name": "محمد",
+            "last_name": "وحيبة",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "email": "info@mwheba.com",
+            "phone": "0100000001",
+            "user_type": "admin",
+            "status": "active",
+            "address": "القاهرة، مصر"
+        }
+    },
+    {
+        "model": "users.activitylog",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "action": "تسجيل دخول",
+            "model_name": "User",
+            "object_id": 1,
+            "timestamp": "2024-01-01T08:00:00Z",
+            "ip_address": "192.168.1.1",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "extra_data": {"notes": "تسجيل دخول من الحاسوب المكتبي"}
+        }
+    },
+    {
+        "model": "users.activitylog",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "action": "إضافة فاتورة",
+            "model_name": "Purchase",
+            "object_id": 1,
+            "timestamp": "2024-01-01T09:15:00Z",
+            "ip_address": "192.168.1.2",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "extra_data": {"notes": "إضافة فاتورة مشتريات جديدة", "invoice_number": "PUR0001"}
+        }
+    },
+    {
+        "model": "users.activitylog",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "action": "تحديث مخزون",
+            "model_name": "Stock",
+            "object_id": 1,
+            "timestamp": "2024-01-01T10:30:00Z",
+            "ip_address": "192.168.1.3",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "extra_data": {"notes": "تحديث كمية المنتج في المخزن", "product_id": 1}
+        }
+    },
+    {
+        "model": "users.activitylog",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "action": "إضافة فاتورة",
+            "model_name": "Sale",
+            "object_id": 1,
+            "timestamp": "2024-01-01T11:45:00Z",
+            "ip_address": "192.168.1.4",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "extra_data": {"notes": "إضافة فاتورة مبيعات جديدة", "invoice_number": "SALE0001"}
+        }
+    }
+] 

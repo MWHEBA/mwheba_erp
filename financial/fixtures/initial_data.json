@@ -1,0 +1,386 @@
+[
+    {
+        "model": "financial.category",
+        "pk": 1,
+        "fields": {
+            "name": "مرتبات ومكافآت",
+            "type": "expense",
+            "description": "مصروفات المرتبات والمكافآت للموظفين",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "financial.category",
+        "pk": 2,
+        "fields": {
+            "name": "إيجارات",
+            "type": "expense",
+            "description": "مصروفات إيجار المقرات والمكاتب",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "financial.category",
+        "pk": 3,
+        "fields": {
+            "name": "فواتير خدمات",
+            "type": "expense",
+            "description": "مصروفات فواتير الكهرباء والمياه والغاز والانترنت",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "financial.category",
+        "pk": 4,
+        "fields": {
+            "name": "مبيعات منتجات",
+            "type": "income",
+            "description": "إيرادات بيع المنتجات",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "financial.category",
+        "pk": 5,
+        "fields": {
+            "name": "خدمات استشارية",
+            "type": "income",
+            "description": "إيرادات الخدمات الاستشارية",
+            "is_active": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "financial.account",
+        "pk": 1,
+        "fields": {
+            "name": "الصندوق النقدي",
+            "account_number": "CASH01",
+            "type": "cash",
+            "code": "1001",
+            "balance": "50000.00",
+            "description": "الصندوق الرئيسي للشركة",
+            "is_active": true,
+            "parent": null,
+            "account_type": "asset",
+            "is_bank_reconciliation": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.account",
+        "pk": 2,
+        "fields": {
+            "name": "البنك الأهلي",
+            "account_number": "123456789",
+            "type": "bank",
+            "code": "1002",
+            "balance": "150000.00",
+            "description": "حساب البنك الأهلي الرئيسي",
+            "is_active": true,
+            "parent": null,
+            "account_type": "asset",
+            "is_bank_reconciliation": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.account",
+        "pk": 3,
+        "fields": {
+            "name": "محفظة الشركة الإلكترونية",
+            "account_number": "WALLET01",
+            "type": "wallet",
+            "code": "1003",
+            "balance": "20000.00",
+            "description": "محفظة إلكترونية للمدفوعات الرقمية",
+            "is_active": true,
+            "parent": null,
+            "account_type": "asset",
+            "is_bank_reconciliation": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.account",
+        "pk": 4,
+        "fields": {
+            "name": "حساب المصروفات العامة",
+            "account_number": "EXP01",
+            "type": "other",
+            "code": "2001",
+            "balance": "0.00",
+            "description": "حساب تجميعي للمصروفات العامة",
+            "is_active": true,
+            "parent": null,
+            "account_type": "expense",
+            "is_bank_reconciliation": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.account",
+        "pk": 5,
+        "fields": {
+            "name": "حساب الإيرادات",
+            "account_number": "INC01",
+            "type": "other",
+            "code": "3001",
+            "balance": "0.00",
+            "description": "حساب تجميعي للإيرادات",
+            "is_active": true,
+            "parent": null,
+            "account_type": "income",
+            "is_bank_reconciliation": false,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.transaction",
+        "pk": 1,
+        "fields": {
+            "account": 1,
+            "to_account": null,
+            "transaction_type": "expense",
+            "amount": "5000.00",
+            "date": "2024-01-05",
+            "description": "دفع مصروفات إيجار المكتب",
+            "reference_number": "EXP-2024-001",
+            "reference": "الإيجار الشهري",
+            "is_reconciled": true,
+            "created_at": "2024-01-05T09:00:00Z",
+            "updated_at": "2024-01-05T09:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.transaction",
+        "pk": 2,
+        "fields": {
+            "account": 2,
+            "to_account": null,
+            "transaction_type": "expense",
+            "amount": "15000.00",
+            "date": "2024-01-10",
+            "description": "دفع مرتبات الموظفين",
+            "reference_number": "EXP-2024-002",
+            "reference": "مرتبات شهر يناير",
+            "is_reconciled": true,
+            "created_at": "2024-01-10T10:00:00Z",
+            "updated_at": "2024-01-10T10:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.transaction",
+        "pk": 3,
+        "fields": {
+            "account": null,
+            "to_account": 1,
+            "transaction_type": "income",
+            "amount": "20000.00",
+            "date": "2024-01-15",
+            "description": "تحصيل إيرادات مبيعات",
+            "reference_number": "INC-2024-001",
+            "reference": "مبيعات الأسبوع الأول من يناير",
+            "is_reconciled": true,
+            "created_at": "2024-01-15T14:00:00Z",
+            "updated_at": "2024-01-15T14:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.transaction",
+        "pk": 4,
+        "fields": {
+            "account": 1,
+            "to_account": 2,
+            "transaction_type": "transfer",
+            "amount": "10000.00",
+            "date": "2024-01-20",
+            "description": "تحويل من الصندوق إلى البنك",
+            "reference_number": "TRF-2024-001",
+            "reference": "إيداع نقدي",
+            "is_reconciled": true,
+            "created_at": "2024-01-20T11:30:00Z",
+            "updated_at": "2024-01-20T11:30:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.transactionline",
+        "pk": 1,
+        "fields": {
+            "transaction": 1,
+            "account": 4,
+            "debit": "5000.00",
+            "credit": "0.00",
+            "description": "مصروف إيجار",
+            "created_at": "2024-01-05T09:00:00Z",
+            "updated_at": "2024-01-05T09:00:00Z"
+        }
+    },
+    {
+        "model": "financial.transactionline",
+        "pk": 2,
+        "fields": {
+            "transaction": 1,
+            "account": 1,
+            "debit": "0.00",
+            "credit": "5000.00",
+            "description": "دفع نقدي للإيجار",
+            "created_at": "2024-01-05T09:00:00Z",
+            "updated_at": "2024-01-05T09:00:00Z"
+        }
+    },
+    {
+        "model": "financial.transactionline",
+        "pk": 3,
+        "fields": {
+            "transaction": 2,
+            "account": 4,
+            "debit": "15000.00",
+            "credit": "0.00",
+            "description": "مصروف مرتبات",
+            "created_at": "2024-01-10T10:00:00Z",
+            "updated_at": "2024-01-10T10:00:00Z"
+        }
+    },
+    {
+        "model": "financial.transactionline",
+        "pk": 4,
+        "fields": {
+            "transaction": 2,
+            "account": 2,
+            "debit": "0.00",
+            "credit": "15000.00",
+            "description": "دفع المرتبات من البنك",
+            "created_at": "2024-01-10T10:00:00Z",
+            "updated_at": "2024-01-10T10:00:00Z"
+        }
+    },
+    {
+        "model": "financial.expense",
+        "pk": 1,
+        "fields": {
+            "title": "إيجار المكتب الرئيسي",
+            "account": 4,
+            "payment_account": 1,
+            "amount": "5000.00",
+            "date": "2024-01-05",
+            "payment_date": "2024-01-05",
+            "category": 2,
+            "description": "دفع إيجار المكتب الرئيسي لشهر يناير",
+            "reference_number": "EXP-2024-001",
+            "reference": "الإيجار الشهري",
+            "status": "paid",
+            "transaction": 1,
+            "created_at": "2024-01-05T09:00:00Z",
+            "updated_at": "2024-01-05T09:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.expense",
+        "pk": 2,
+        "fields": {
+            "title": "مرتبات الموظفين",
+            "account": 4,
+            "payment_account": 2,
+            "amount": "15000.00",
+            "date": "2024-01-10",
+            "payment_date": "2024-01-10",
+            "category": 1,
+            "description": "دفع مرتبات الموظفين لشهر يناير",
+            "reference_number": "EXP-2024-002",
+            "reference": "مرتبات شهر يناير",
+            "status": "paid",
+            "transaction": 2,
+            "created_at": "2024-01-10T10:00:00Z",
+            "updated_at": "2024-01-10T10:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.expense",
+        "pk": 3,
+        "fields": {
+            "title": "فاتورة الكهرباء",
+            "account": 4,
+            "payment_account": 3,
+            "amount": "1500.00",
+            "date": "2024-01-25",
+            "payment_date": null,
+            "category": 3,
+            "description": "فاتورة الكهرباء الشهرية",
+            "reference_number": "EXP-2024-003",
+            "reference": "فاتورة الكهرباء",
+            "status": "pending",
+            "transaction": null,
+            "created_at": "2024-01-25T15:00:00Z",
+            "updated_at": "2024-01-25T15:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.income",
+        "pk": 1,
+        "fields": {
+            "title": "إيرادات المبيعات",
+            "account": 5,
+            "receiving_account": 1,
+            "amount": "20000.00",
+            "date": "2024-01-15",
+            "received_date": "2024-01-15",
+            "category": 4,
+            "description": "تحصيل إيرادات مبيعات الأسبوع الأول من يناير",
+            "reference_number": "INC-2024-001",
+            "reference": "مبيعات الأسبوع الأول من يناير",
+            "status": "received",
+            "transaction": 3,
+            "created_at": "2024-01-15T14:00:00Z",
+            "updated_at": "2024-01-15T14:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "financial.income",
+        "pk": 2,
+        "fields": {
+            "title": "خدمات استشارية",
+            "account": 5,
+            "receiving_account": 2,
+            "amount": "8000.00",
+            "date": "2024-01-28",
+            "received_date": null,
+            "category": 5,
+            "description": "خدمات استشارية لشركة تقنية المعلومات",
+            "reference_number": "INC-2024-002",
+            "reference": "استشارات فنية",
+            "status": "pending",
+            "transaction": null,
+            "created_at": "2024-01-28T16:30:00Z",
+            "updated_at": "2024-01-28T16:30:00Z",
+            "created_by": 1
+        }
+    }
+] 

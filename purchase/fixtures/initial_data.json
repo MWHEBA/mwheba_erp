@@ -1,0 +1,381 @@
+[
+    {
+        "model": "purchase.purchase",
+        "pk": 1,
+        "fields": {
+            "number": "PUR0001",
+            "date": "2024-01-01",
+            "supplier": 1,
+            "warehouse": 1,
+            "subtotal": "5000.00",
+            "discount": "0.00",
+            "tax": "700.00",
+            "total": "5700.00",
+            "payment_method": "cash",
+            "payment_status": "paid",
+            "notes": "فاتورة مشتريات تجريبية",
+            "created_by": 1,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "purchase.purchase",
+        "pk": 2,
+        "fields": {
+            "number": "PUR0002",
+            "date": "2024-01-05",
+            "supplier": 1,
+            "warehouse": 3,
+            "subtotal": "15000.00",
+            "discount": "500.00",
+            "tax": "2030.00",
+            "total": "16530.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مشتريات أجهزة إلكترونية",
+            "created_by": 1,
+            "created_at": "2024-01-05T10:00:00Z",
+            "updated_at": "2024-01-05T10:00:00Z"
+        }
+    },
+    {
+        "model": "purchase.purchase",
+        "pk": 3,
+        "fields": {
+            "number": "PUR0003",
+            "date": "2024-01-10",
+            "supplier": 1,
+            "warehouse": 2,
+            "subtotal": "8000.00",
+            "discount": "200.00",
+            "tax": "1092.00",
+            "total": "8892.00",
+            "payment_method": "credit",
+            "payment_status": "unpaid",
+            "notes": "فاتورة مشتريات أثاث مكتبي",
+            "created_by": 1,
+            "created_at": "2024-01-10T14:30:00Z",
+            "updated_at": "2024-01-10T14:30:00Z"
+        }
+    },
+    {
+        "model": "purchase.purchase",
+        "pk": 4,
+        "fields": {
+            "number": "PUR0004",
+            "date": "2024-01-15",
+            "supplier": 1,
+            "warehouse": 1,
+            "subtotal": "6000.00",
+            "discount": "0.00",
+            "tax": "840.00",
+            "total": "6840.00",
+            "payment_method": "cash",
+            "payment_status": "paid",
+            "notes": "فاتورة مشتريات ملابس",
+            "created_by": 1,
+            "created_at": "2024-01-15T09:45:00Z",
+            "updated_at": "2024-01-15T09:45:00Z"
+        }
+    },
+    {
+        "model": "purchase.purchase",
+        "pk": 5,
+        "fields": {
+            "number": "PUR0005",
+            "date": "2024-01-20",
+            "supplier": 1,
+            "warehouse": 3,
+            "subtotal": "12000.00",
+            "discount": "1000.00",
+            "tax": "1540.00",
+            "total": "12540.00",
+            "payment_method": "credit",
+            "payment_status": "partially_paid",
+            "notes": "فاتورة مشتريات أجهزة منزلية",
+            "created_by": 1,
+            "created_at": "2024-01-20T11:15:00Z",
+            "updated_at": "2024-01-20T11:15:00Z"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 1,
+        "fields": {
+            "purchase": 1,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "5000.00",
+            "discount": "0.00",
+            "total": "5000.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 2,
+        "fields": {
+            "purchase": 2,
+            "product": 3,
+            "quantity": 1,
+            "unit_price": "15000.00",
+            "discount": "500.00",
+            "total": "14500.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 3,
+        "fields": {
+            "purchase": 3,
+            "product": 5,
+            "quantity": 4,
+            "unit_price": "1500.00",
+            "discount": "0.00",
+            "total": "6000.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 4,
+        "fields": {
+            "purchase": 3,
+            "product": 5,
+            "quantity": 1,
+            "unit_price": "2000.00",
+            "discount": "200.00",
+            "total": "1800.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 5,
+        "fields": {
+            "purchase": 4,
+            "product": 2,
+            "quantity": 20,
+            "unit_price": "200.00",
+            "discount": "0.00",
+            "total": "4000.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 6,
+        "fields": {
+            "purchase": 4,
+            "product": 7,
+            "quantity": 5,
+            "unit_price": "400.00",
+            "discount": "0.00",
+            "total": "2000.00"
+        }
+    },
+    {
+        "model": "purchase.purchaseitem",
+        "pk": 7,
+        "fields": {
+            "purchase": 5,
+            "product": 6,
+            "quantity": 2,
+            "unit_price": "6000.00",
+            "discount": "1000.00",
+            "total": "11000.00"
+        }
+    },
+    {
+        "model": "purchase.purchasepayment",
+        "pk": 1,
+        "fields": {
+            "purchase": 1,
+            "amount": "5700.00",
+            "payment_date": "2024-01-01",
+            "payment_method": "cash",
+            "reference_number": "PAY001",
+            "notes": "دفعة كاملة نقدية",
+            "created_at": "2024-01-01T00:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasepayment",
+        "pk": 2,
+        "fields": {
+            "purchase": 2,
+            "amount": "10000.00",
+            "payment_date": "2024-01-05",
+            "payment_method": "bank_transfer",
+            "reference_number": "TRF002",
+            "notes": "دفعة أولى",
+            "created_at": "2024-01-05T10:00:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasepayment",
+        "pk": 3,
+        "fields": {
+            "purchase": 4,
+            "amount": "6840.00",
+            "payment_date": "2024-01-15",
+            "payment_method": "cash",
+            "reference_number": "PAY003",
+            "notes": "دفعة كاملة نقدية",
+            "created_at": "2024-01-15T09:45:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasepayment",
+        "pk": 4,
+        "fields": {
+            "purchase": 5,
+            "amount": "5000.00",
+            "payment_date": "2024-01-20",
+            "payment_method": "bank_transfer",
+            "reference_number": "TRF004",
+            "notes": "دفعة أولى",
+            "created_at": "2024-01-20T11:15:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasereturn",
+        "pk": 1,
+        "fields": {
+            "number": "RET-QIOKDD",
+            "date": "2024-01-03",
+            "purchase": 1,
+            "warehouse": 1,
+            "subtotal": "1000.00",
+            "discount": "0.00",
+            "tax": "140.00",
+            "total": "1140.00",
+            "status": "confirmed",
+            "notes": "إرجاع جزء من البضاعة لوجود عطل",
+            "created_at": "2024-01-03T14:25:00Z",
+            "updated_at": "2024-01-03T14:25:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasereturn",
+        "pk": 2,
+        "fields": {
+            "number": "RET-P7PR5H",
+            "date": "2024-01-18",
+            "purchase": 4,
+            "warehouse": 1,
+            "subtotal": "800.00",
+            "discount": "0.00",
+            "tax": "112.00",
+            "total": "912.00",
+            "status": "confirmed",
+            "notes": "إرجاع بضاعة غير مطابقة للمواصفات",
+            "created_at": "2024-01-18T10:15:00Z",
+            "updated_at": "2024-01-18T10:15:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasereturn",
+        "pk": 3,
+        "fields": {
+            "number": "RET-ABC123",
+            "date": "2024-01-25",
+            "purchase": 5,
+            "warehouse": 3,
+            "subtotal": "6000.00",
+            "discount": "0.00",
+            "tax": "840.00",
+            "total": "6840.00",
+            "status": "draft",
+            "notes": "إرجاع جهاز به عطل",
+            "created_at": "2024-01-25T09:30:00Z",
+            "updated_at": "2024-01-25T09:30:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchasereturnitem",
+        "pk": 1,
+        "fields": {
+            "purchase_return": 1,
+            "purchase_item": 1,
+            "product": 1,
+            "quantity": 1,
+            "unit_price": "1000.00",
+            "discount": "0.00",
+            "total": "1000.00",
+            "reason": "وجود عطل في المنتج"
+        }
+    },
+    {
+        "model": "purchase.purchasereturnitem",
+        "pk": 2,
+        "fields": {
+            "purchase_return": 2,
+            "purchase_item": 5,
+            "product": 2,
+            "quantity": 4,
+            "unit_price": "200.00",
+            "discount": "0.00",
+            "total": "800.00",
+            "reason": "المقاس غير مطابق"
+        }
+    },
+    {
+        "model": "purchase.purchasereturnitem",
+        "pk": 3,
+        "fields": {
+            "purchase_return": 3,
+            "purchase_item": 7,
+            "product": 6,
+            "quantity": 1,
+            "unit_price": "6000.00",
+            "discount": "0.00",
+            "total": "6000.00",
+            "reason": "عطل في الجهاز"
+        }
+    },
+    {
+        "model": "purchase.purchaseorder",
+        "pk": 1,
+        "fields": {
+            "number": "PO0001",
+            "date": "2024-01-28",
+            "supplier": 1,
+            "warehouse": 3,
+            "expected_date": "2024-02-05",
+            "status": "confirmed",
+            "notes": "طلب شراء أجهزة إلكترونية جديدة",
+            "created_at": "2024-01-28T11:30:00Z",
+            "updated_at": "2024-01-28T11:30:00Z",
+            "created_by": 1
+        }
+    },
+    {
+        "model": "purchase.purchaseorderitem",
+        "pk": 1,
+        "fields": {
+            "purchase_order": 1,
+            "product": 1,
+            "quantity": 5,
+            "unit_price": "4800.00",
+            "received_quantity": 0,
+            "notes": "شراء كمية جديدة بسعر خاص"
+        }
+    },
+    {
+        "model": "purchase.purchaseorderitem",
+        "pk": 2,
+        "fields": {
+            "purchase_order": 1,
+            "product": 3,
+            "quantity": 3,
+            "unit_price": "14500.00",
+            "received_quantity": 0,
+            "notes": "طلب أجهزة آيفون"
+        }
+    }
+]
