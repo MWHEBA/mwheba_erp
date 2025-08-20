@@ -13,7 +13,7 @@ cryptography==44.0.2
 cssselect2==0.8.0
 defusedxml==0.7.1
 diff-match-patch==20241021
-Django≥4.2
+Django>=4.2
 django-appconf==1.1.0
 django-auditlog==2.3.0
 django-bootstrap-datepicker-plus==5.0.4
@@ -88,4 +88,5 @@ zopfli==0.2.3.post1
 xlsxwriter==3.2.2
 pandas==2.2.3
 django-bootstrap4==23.2
+
 
